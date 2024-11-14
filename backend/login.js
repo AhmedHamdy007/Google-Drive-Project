@@ -1,14 +1,20 @@
 const express = require('express');
 const http = require('http');
 const https = require('https');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 
 // Initialize the Express app
 const app = express();
-const port = 3000;
+const port = 5000;
+
+// Enable CORS to allow requests from the Next.js frontend
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+
 
 // Use bodyParser to parse form data
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json()); // Enable JSON parsing
 
 // Function to fetch data from the external URL
 function fetchData(url) {
@@ -49,58 +55,27 @@ async function authenticate(login, password) {
     }
 }
 
-// Route to display the login form
-app.get('/', (req, res) => {
-    res.send(`
-        <html>
-        <head><title>Login</title></head>
-        <body>
-            <h1>Login to Authenticate</h1>
-            <form action="/auth" method="post">
-                <label for="login">Login:</label>
-                <input type="text" id="login" name="login" required><br><br>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required><br><br>
-                <button type="submit">Authenticate</button>
-            </form>
-        </body>
-        </html>
-    `);
-});
-
-// Route to handle form submission and authenticate
+// Route to handle authentication
 app.post('/auth', async (req, res) => {
     const { login, password } = req.body;
 
     try {
-        // Step 1: Authenticate with the provided login and password
+        // Authenticate with the provided login and password
         const authResult = await authenticate(login, password);
 
-        // Step 2: Display result based on authentication success or failure
+        // Send JSON response based on authentication success or failure
         if (authResult.success) {
-            res.send(`
-                <html>
-                <head><title>Authentication Successful</title></head>
-                <body>
-                    <h1>Authentication Successful!</h1>
-                    <p>Your session ID is: ${authResult.sessionId}</p>
-                </body>
-                </html>
-            `);
+            res.json({
+                message: 'Authentication Successful!',
+                sessionId: authResult.sessionId,
+            });
         } else {
-            res.send(`
-                <html>
-                <head><title>Authentication Failed</title></head>
-                <body>
-                    <h1>Authentication Failed!</h1>
-                    <p>Invalid login or password. Please try again.</p>
-                    <a href="/">Go back to login</a>
-                </body>
-                </html>
-            `);
+            res.status(401).json({
+                message: 'Authentication Failed! Invalid login or password.',
+            });
         }
     } catch (error) {
-        res.status(500).send('Error during authentication: ' + error.message);
+        res.status(500).json({ message: 'Error during authentication: ' + error.message });
     }
 });
 

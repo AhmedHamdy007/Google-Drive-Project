@@ -1,17 +1,48 @@
-import '../globals.css'; // Import CSS here
+"use client"; // Add this at the very top
+import { useState } from 'react';
 
 export default function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      // Send request to Express backend at port 5000
+      const response = await fetch('http://localhost:5000/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ login: username, password }),
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMessage(`Authenticated! Session ID: ${data.sessionId}`);
+      } else {
+        setMessage('Authentication failed. Check your credentials.');
+      }
+    } catch (error) {
+      setMessage('An error occurred: ' + (error as Error).message);
+    }
+  };
+
   return (
     <div>
       <h2>Login</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username</label>
           <input
             type="text"
             id="username"
             name="username"
-            placeholder="Enter your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
@@ -21,7 +52,8 @@ export default function Login() {
             type="password"
             id="password"
             name="password"
-            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
@@ -29,9 +61,7 @@ export default function Login() {
           <button type="submit">Login</button>
         </div>
       </form>
-      <p>
-        Don't have an account? <a href="#">Sign up</a>
-      </p>
+      <p>{message}</p>
     </div>
   );
 }
