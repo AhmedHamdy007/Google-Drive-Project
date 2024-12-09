@@ -4,6 +4,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 First, run the development server:
 
+lets say that now I am doing changes to this text file and what we are waiting for is a change notice in addition to that how to push up these files 
 ```bash
 npm run dev
 # or
