@@ -1,0 +1,134 @@
+/* General styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f7fb;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+}
+
+.sidebar {
+  width: 20%;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.folders {
+  display: flex;
+  gap: 10px;
+}
+
+.folder {
+  padding: 15px;
+  border-radius: 5px;
+  color: #fff;
+  flex: 1;
+  text-align: center;
+}
+
+.folder.red { background-color: #ff6b6b; }
+.folder.blue { background-color: #4dabf7; }
+.folder.yellow { background-color: #ffc107; }
+.folder.green { background-color: #51cf66; }
+
+.daily-tasks {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.daily-tasks .task {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  color: white;
+}
+
+.task.blue { background-color: #4dabf7; }
+.task.yellow { background-color: #ffc107; }
+.task.red { background-color: #ff6b6b; }
+.task.green { background-color: #51cf66; }
+
+.weekly-timetable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.weekly-timetable th, .weekly-timetable td {
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.weekly-timetable .event {
+  background-color: #4dabf7;
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.weekly-timetable .empty-slot {
+  color: #ccc;
+}
+
+
+/* Sidebar Styles */
+.sidebar {
+  width: 20%;
+  background-color: #ffffff;
+  padding: 20px;
+  height: 100vh; /* Full height */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.sidebar h2 {
+  font-size: 24px;
+  color: #FF8C00;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  font-size: 18px;
+  color: #333;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar ul li:hover {
+  background-color: #FF8C00;
+  color: #fff;
+}

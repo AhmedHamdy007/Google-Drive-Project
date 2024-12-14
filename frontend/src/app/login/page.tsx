@@ -1,5 +1,7 @@
-"use client"; // Add this at the very top
+"use client"; 
 import { useState } from 'react';
+import '../styles/login.css';
+
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -33,35 +35,37 @@ export default function Login() {
 
   return (
     <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <button type="submit">Login</button>
-        </div>
-      </form>
-      <p>{message}</p>
-    </div>
+    <h2 style={{ color: '#4CAF50' }}>Login</h2> {/* Font color for heading */}
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="username" style={{ color: '#555' }}>Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="password" style={{ color: '#555' }}>Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <button type="submit">Login</button>
+      </div>
+    </form>
+    <p style={{ color: message.startsWith('Authenticated') ? '#4CAF50' : 'red' }}>
+      {message}
+    </p>
+  </div>
   );
 }
