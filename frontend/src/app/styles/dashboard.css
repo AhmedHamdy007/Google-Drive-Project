@@ -18,12 +18,7 @@ body {
   width: 100%;
 }
 
-.sidebar {
-  width: 20%;
-  background-color: #ffffff;
-  padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
+
 
 .main-content {
   flex-grow: 1;
