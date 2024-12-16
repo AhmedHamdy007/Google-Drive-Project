@@ -1,33 +1,12 @@
 import React from 'react';
 
-// Define a type for the days of the week
-type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday';
-
-// Define the type for events
-type Events = {
-  [key in Day]: string[];
+type TimetableProps = {
+  classes: { day: string; time: string; className: string }[];
+  daysOfWeek: string[];
+  timeSlots: string[];
 };
 
-const WeeklyTimetable: React.FC = () => {
-  const timeSlots = [
-    '8:00 AM - 10:00 AM',
-    '10:00 AM - 12:00 PM',
-    '12:00 PM - 2:00 PM',
-    '2:00 PM - 4:00 PM',
-    '4:00 PM - 5:00 PM',
-  ];
-
-  const daysOfWeek: Day[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-
-  // Mock data for events with proper type
-  const events: Events = {
-    Monday: ['App Development', '', '', 'System Design', ''],
-    Tuesday: ['', 'Internet Programming', 'App Development', '', ''],
-    Wednesday: ['', '', 'System Design', 'Internet Programming', ''],
-    Thursday: ['', '', '', 'App Development', 'SEO Analytics'],
-    Friday: ['Web Development', '', '', 'System Design', ''],
-  };
-
+const Timetable: React.FC<TimetableProps> = ({ classes, daysOfWeek, timeSlots }) => {
   return (
     <div className="weekly-timetable">
       <h3>Weekly Timetable</h3>
@@ -41,16 +20,18 @@ const WeeklyTimetable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {timeSlots.map((timeSlot, rowIndex) => (
-            <tr key={rowIndex}>
+          {timeSlots.map((timeSlot) => (
+            <tr key={timeSlot}>
               <td>{timeSlot}</td>
               {daysOfWeek.map((day) => (
-                <td key={day}>
-                  {events[day][rowIndex] ? (
-                    <div className="event">{events[day][rowIndex]}</div>
-                  ) : (
-                    <div className="empty-slot">No Event</div>
-                  )}
+                <td key={`${day}-${timeSlot}`}>
+                  {classes
+                    .filter((entry) => entry.day === day && entry.time === timeSlot)
+                    .map((entry, idx) => (
+                      <div key={idx} className="event">
+                        {entry.className}
+                      </div>
+                    ))}
                 </td>
               ))}
             </tr>
@@ -61,4 +42,4 @@ const WeeklyTimetable: React.FC = () => {
   );
 };
 
-export default WeeklyTimetable;
+export default Timetable;
