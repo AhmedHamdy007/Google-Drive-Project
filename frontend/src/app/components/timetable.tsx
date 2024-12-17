@@ -10,12 +10,14 @@ const Timetable: React.FC<TimetableProps> = ({ classes, daysOfWeek, timeSlots })
   return (
     <div className="weekly-timetable">
       <h3>Weekly Timetable</h3>
-      <table>
+      <table aria-label="Weekly Timetable">
         <thead>
           <tr>
-            <th>Time</th>
+            <th scope="col">Time</th>
             {daysOfWeek.map((day) => (
-              <th key={day}>{day}</th>
+              <th key={day} scope="col">
+                {day}
+              </th>
             ))}
           </tr>
         </thead>
@@ -27,8 +29,8 @@ const Timetable: React.FC<TimetableProps> = ({ classes, daysOfWeek, timeSlots })
                 <td key={`${day}-${timeSlot}`}>
                   {classes
                     .filter((entry) => entry.day === day && entry.time === timeSlot)
-                    .map((entry, idx) => (
-                      <div key={idx} className="event">
+                    .map((entry) => (
+                      <div key={`${entry.day}-${entry.time}-${entry.className}`} className="event">
                         {entry.className}
                       </div>
                     ))}

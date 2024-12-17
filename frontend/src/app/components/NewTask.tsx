@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 interface Task {
   name: string;
-  color: 'red' | 'blue' | 'yellow' | 'green';
+  priority: 'High' | 'Medium' | 'Low' | 'Info';
 }
 
 interface NewTaskProps {
@@ -11,52 +11,48 @@ interface NewTaskProps {
 
 const NewTask: React.FC<NewTaskProps> = ({ onTaskAdded }) => {
   const [taskName, setTaskName] = useState('');
-  const [taskColor, setTaskColor] = useState<Task['color']>('blue');
+  const [taskPriority, setTaskPriority] = useState<Task['priority']>('Info');
 
   const handleTaskNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskName(event.target.value);
   };
 
-  const handleTaskColorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTaskColor(event.target.value as Task['color']);
+  const handleTaskPriorityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setTaskPriority(event.target.value as Task['priority']);
   };
 
   const handleAddTask = () => {
-    if (taskName.trim() !== '') {
+    const trimmedName = taskName.trim();
+    if (trimmedName) {
       const newTask: Task = {
-        name: taskName.trim(),
-        color: taskColor,
+        name: trimmedName,
+        priority: taskPriority,
       };
       onTaskAdded(newTask);
       setTaskName('');
-      setTaskColor('blue');
+      setTaskPriority('Info'); // Reset to default
     }
   };
 
   return (
-    <div className="new-task-section">
+    <div className="new-task">
       <h3>Add New Task</h3>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleAddTask();
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Task name"
-          value={taskName}
-          onChange={handleTaskNameChange}
-          required
-        />
-        <select value={taskColor} onChange={handleTaskColorChange}>
-          <option value="blue">Blue</option>
-          <option value="yellow">Yellow</option>
-          <option value="red">Red</option>
-          <option value="green">Green</option>
-        </select>
-        <button type="submit">Add Task</button>
-      </form>
+      <input
+        type="text"
+        placeholder="Task Name"
+        value={taskName}
+        onChange={handleTaskNameChange}
+        aria-label="Task Name"
+      />
+      <select value={taskPriority} onChange={handleTaskPriorityChange} aria-label="Task Priority">
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+        <option value="Info">Info</option>
+      </select>
+      <button onClick={handleAddTask} disabled={!taskName.trim()}>
+        Add Task
+      </button>
     </div>
   );
 };
