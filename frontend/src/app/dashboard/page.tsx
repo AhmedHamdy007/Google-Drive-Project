@@ -5,10 +5,12 @@ import '../styles/dashboard.css'; // Import the CSS file
 
 const Page: React.FC = () => {
   return (
+     
     <div className="container">
       <Sidebar />
       <MainContent />
     </div>
+  
   );
 };
 

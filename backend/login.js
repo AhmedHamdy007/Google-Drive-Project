@@ -18,7 +18,7 @@ app.use(bodyParser.json()); // Enable JSON parsing
 
 // MongoDB URI and database setup
 const mongoURI = "mongodb://localhost:27017/Edudb"; // Correct MongoDB port
-const dbName = "admin";
+const dbName = "EduSyncDB";
 let db;
 
 // Connect to MongoDB
