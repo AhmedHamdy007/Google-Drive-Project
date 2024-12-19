@@ -68,6 +68,56 @@ app.post('/auth', async (req, res) => {
     }
 });
 
+app.get('/user-subjects', async (req, res) => {
+    const { no_matrik, sesi, semester } = req.query;
+
+    if (!no_matrik) {
+        return res.status(400).json({ message: 'Missing no_matrik parameter.' });
+    }
+
+    try {
+        const subjectsUrl = `http://web.fc.utm.my/ttms/web_man_webservice_json.cgi?entity=pelajar_subjek&no_matrik=${no_matrik}`;
+        const allSubjects = await fetchData(subjectsUrl);
+
+        console.log('Raw response:', allSubjects); // Log the raw response
+
+        // Filter subjects based on sesi and semester
+        const filteredSubjects = allSubjects.filter(
+            (subject) => subject.sesi === sesi && subject.semester === parseInt(semester, 10)
+        );
+
+        console.log('Filtered subjects:', filteredSubjects); // Log filtered data
+
+        res.json(filteredSubjects);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching subjects: ' + error.message });
+    }
+});
+
+app.get('/lecturer-courses', async (req, res) => {
+    const { no_pekerja, sesi, semester } = req.query;
+
+    if (!no_pekerja) {
+        return res.status(400).json({ message: 'Missing no_pekerja parameter.' });
+    }
+
+    try {
+        // Construct the URL
+        let coursesUrl = `http://web.fc.utm.my/ttms/web_man_webservice_json.cgi?entity=pensyarah_subjek&no_pekerja=${no_pekerja}`;
+        if (sesi) coursesUrl += `&sesi=${sesi}`;
+        if (semester) coursesUrl += `&semester=${semester}`;
+
+        // Fetch data from the external service
+        const courses = await fetchData(coursesUrl);
+
+        console.log('Lecturer Courses:', courses); // Debug fetched data
+        res.json(courses);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching lecturer courses: ' + error.message });
+    }
+});
+
+
 
 
 // Start the server

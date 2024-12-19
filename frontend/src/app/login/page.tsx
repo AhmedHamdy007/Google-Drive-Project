@@ -1,6 +1,5 @@
 "use client";
 import '../styles/login.css'; // Adjust the path to where your CSS file is located
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'; // For navigation between pages
 
@@ -27,13 +26,16 @@ export default function Login() {
 
       if (response.ok) {
         const result = await response.json();
-        // Pass the user data to the TestSer page via query parameters
-        router.push(`/testSer?data=${encodeURIComponent(JSON.stringify(result.data))}`);
+        console.log("Login response:", result);  // Log the response from the backend
+        // Redirect to the test page with the matric number
+        router.push(`/test?no_matrik=${encodeURIComponent(result.data.login_name)}`);
       } else {
         const errorMessage = await response.json();
+        console.error("Error response:", errorMessage);  // Log the error message from backend
         setError(errorMessage.message);
       }
     } catch (err) {
+      console.error("Network error:", err);  // Log network errors
       setError('An error occurred. Please try again.');
     }
   };
