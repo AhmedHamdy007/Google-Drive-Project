@@ -1,67 +1,62 @@
-"use client"; 
-import { useState } from 'react';
-import '../styles/login.css';
+"use client";
+import '../styles/login.css'; // Adjust the path to where your CSS file is located
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation'; // For navigation between pages
 
 export default function Login() {
-  const [username, setUsername] = useState('');
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const router = useRouter(); // Initialize the router for redirection
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!username.trim() || !password.trim()) {
-      setMessage("Please fill in both fields.");
+    if (!login || !password) {
+      setError('Please fill in both fields.');
       return;
     }
 
     try {
-      // Send request to Express backend at port 5000
       const response = await fetch('http://localhost:5000/auth', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ login: username, password }),
-        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ login, password }),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        setMessage(`Authenticated! Session ID: ${data.sessionId}`);
+        const result = await response.json();
+        // Pass the user data to the TestSer page via query parameters
+        router.push(`/testSer?data=${encodeURIComponent(JSON.stringify(result.data))}`);
       } else {
-        setMessage('Authentication failed. Check your credentials.');
+        const errorMessage = await response.json();
+        setError(errorMessage.message);
       }
-    } catch (error) {
-      setMessage('An error occurred: ' + (error as Error).message);
+    } catch (err) {
+      setError('An error occurred. Please try again.');
     }
   };
 
-  return (<div className="login-container">
+  return (
+    <div className="login-container">
       <h1>Login</h1>
-      <form onSubmit={handleSubmit} aria-label="Login Form">
-        <label htmlFor="username">Username</label>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter your username"
-          required
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
+          placeholder="Login"
         />
-        <label htmlFor="password">Password</label>
         <input
           type="password"
-          id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter your password"
-          required
+          placeholder="Password"
         />
         <button type="submit">Login</button>
       </form>
-      {message && <p className="message">{message}</p>}
+      {error && <p className="message">{error}</p>}
     </div>
   );
 }
