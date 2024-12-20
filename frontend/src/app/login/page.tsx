@@ -1,6 +1,5 @@
 "use client";
 import '../styles/login.css'; // Adjust the path to where your CSS file is located
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'; // For navigation between pages
 
@@ -27,13 +26,23 @@ export default function Login() {
 
       if (response.ok) {
         const result = await response.json();
-        // Pass the user data to the TestSer page via query parameters
-        router.push(`/testSer?data=${encodeURIComponent(JSON.stringify(result.data))}`);
+        console.log("Login response:", result);  // Log the response from the backend
+       
+        // Extract user data and matric number
+        const userData = result.data; // Assuming `result.data` contains user information
+        const noMatrik = result.data.login_name; // Adjust this field based on your backend response
+
+        // Redirect to StudentInfo page with query parameters
+        router.push(
+          `/StudentInfo?data=${encodeURIComponent(JSON.stringify(userData))}&no_matrik=${encodeURIComponent(noMatrik)}`
+        );
       } else {
         const errorMessage = await response.json();
+        console.error("Error response:", errorMessage);  // Log the error message from backend
         setError(errorMessage.message);
       }
     } catch (err) {
+      console.error("Network error:", err);  // Log network errors
       setError('An error occurred. Please try again.');
     }
   };
