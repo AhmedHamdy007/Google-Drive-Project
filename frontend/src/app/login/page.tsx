@@ -27,8 +27,15 @@ export default function Login() {
       if (response.ok) {
         const result = await response.json();
         console.log("Login response:", result);  // Log the response from the backend
-        // Redirect to the test page with the matric number
-        router.push(`/test?no_matrik=${encodeURIComponent(result.data.login_name)}`);
+       
+        // Extract user data and matric number
+        const userData = result.data; // Assuming `result.data` contains user information
+        const noMatrik = result.data.login_name; // Adjust this field based on your backend response
+
+        // Redirect to StudentInfo page with query parameters
+        router.push(
+          `/StudentInfo?data=${encodeURIComponent(JSON.stringify(userData))}&no_matrik=${encodeURIComponent(noMatrik)}`
+        );
       } else {
         const errorMessage = await response.json();
         console.error("Error response:", errorMessage);  // Log the error message from backend
