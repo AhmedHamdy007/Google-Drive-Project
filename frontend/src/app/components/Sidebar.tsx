@@ -8,7 +8,7 @@ const Sidebar: React.FC = () => {
       <h2>EduSync</h2>
       <ul>
         <li>
-        <Link href="/dashboard">Dashboard</Link>
+        <Link href="/dashboard">Dashboard</Link> 
 
         </li>
         <li>
@@ -32,7 +32,7 @@ const Sidebar: React.FC = () => {
           </Link>
         </li>
         <li>
-        <Link href="/dashboard/studentInfo">Student Info</Link>
+        <Link href="/StudentInfo">Student Info</Link>
         </li>
         <li>
           <Link href="/settings" legacyBehavior>
