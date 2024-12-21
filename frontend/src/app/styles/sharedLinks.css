@@ -1,0 +1,80 @@
+/* Flex layout for main container */
+.container {
+    display: flex;
+    height: 100vh; /* Full viewport height */
+  }
+  
+  /* Sidebar styles */
+  .sidebar {
+    width: 250px; /* Adjust the sidebar width as needed */
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Main content area */
+  .main-content {
+    flex: 1; /* Take up remaining space */
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .links-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .link-card {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+  
+  .link-card h3 {
+    font-size: 1.2rem;
+    color: #4a90e2;
+  }
+  
+  .link-card a {
+    display: inline-block;
+    background-color: #4e8bff;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 10px;
+  }
+  
+  .link-card a:hover {
+    background-color: #3b74d1;
+  }
+  
+  .link-card p {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  /* Ensure layout is responsive */
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      width: 100%;
+    }
+  
+    .main-content {
+      width: 100%;
+    }
+  }
+  

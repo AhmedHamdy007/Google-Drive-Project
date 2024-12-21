@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
 import Timetable from '../components/timetable'; // Import the Timetable component
 import '../styles/timetable.css';
 
@@ -38,7 +37,6 @@ const TimetableManager: React.FC = () => {
 
   return (
     <div className="timetable-manager">
-      <Sidebar />
       <div className="manager-content">
         <h2>Timetable Manager</h2>
 

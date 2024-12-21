@@ -1,3 +1,77 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body */
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f7fb;
+    color: #333;
+  }
+  
+  /* Table Styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  
+  th, td {
+    padding: 10px 15px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #4a90e2;
+    color: #ffffff;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f5f8fa;
+  }
+  
+  tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+  
+  td {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  table, th, td {
+    border: 1px solid #ddd;
+  }
+  
+  tr:hover {
+    background-color: #e8f4ff;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    table, th, td {
+      font-size: 0.85rem;
+    }
+  
+    h1, h2 {
+      font-size: 1.4rem;
+    }
+  
+    p {
+      font-size: 0.9rem;
+    }
+  }
+  /* General Button Styles (Could be used throughout the app) */
+button {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+button:hover {
+  opacity: 0.9;
+}
