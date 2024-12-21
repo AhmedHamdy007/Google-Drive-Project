@@ -1,25 +1,10 @@
-/* General styles */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f7fb;
-  color: #333;
-}
-
+/* Container for the Dashboard */
 .container {
   display: flex;
   flex-direction: row;
   height: 100vh;
   width: 100%;
 }
-
-
 
 .main-content {
   flex-grow: 1;
@@ -29,6 +14,7 @@ body {
   gap: 20px;
 }
 
+/* Folders in the Dashboard */
 .folders {
   display: flex;
   gap: 10px;
@@ -47,6 +33,7 @@ body {
 .folder.yellow { background-color: #ffc107; }
 .folder.green { background-color: #51cf66; }
 
+/* Daily Tasks Section */
 .daily-tasks {
   background-color: #ffffff;
   padding: 20px;
@@ -65,27 +52,3 @@ body {
 .task.yellow { background-color: #ffc107; }
 .task.red { background-color: #ff6b6b; }
 .task.green { background-color: #51cf66; }
-
-.weekly-timetable table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.weekly-timetable th, .weekly-timetable td {
-  padding: 15px;
-  text-align: center;
-  border: 1px solid #ddd;
-}
-
-.weekly-timetable .event {
-  background-color: #4dabf7;
-  color: white;
-  padding: 5px;
-  border-radius: 4px;
-}
-
-.weekly-timetable .empty-slot {
-  color: #ccc;
-}
-
-

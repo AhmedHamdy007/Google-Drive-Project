@@ -12,12 +12,12 @@ const Sidebar: React.FC = () => {
 
         </li>
         <li>
-          <Link href="/SharedLinks" legacyBehavior>
+          <Link href="/sharedLinks" legacyBehavior>
             <a>Shared Links</a>
           </Link>
         </li>
         <li>
-          <Link href="/files" legacyBehavior>
+          <Link href="/LecturerUploadLinks" legacyBehavior>
             <a>Files</a>
           </Link>
         </li>

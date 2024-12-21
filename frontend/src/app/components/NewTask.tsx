@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 interface Task {
   name: string;
-  priority: 'High' | 'Medium' | 'Low' | 'Info';
+  priority: 'High' | 'Medium' | 'Low';
 }
 
 interface NewTaskProps {
@@ -11,7 +11,7 @@ interface NewTaskProps {
 
 const NewTask: React.FC<NewTaskProps> = ({ onTaskAdded }) => {
   const [taskName, setTaskName] = useState('');
-  const [taskPriority, setTaskPriority] = useState<Task['priority']>('Info');
+  const [taskPriority, setTaskPriority] = useState<Task['priority']>('Low');
 
   const handleTaskNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskName(event.target.value);
@@ -30,7 +30,7 @@ const NewTask: React.FC<NewTaskProps> = ({ onTaskAdded }) => {
       };
       onTaskAdded(newTask);
       setTaskName('');
-      setTaskPriority('Info'); // Reset to default
+      setTaskPriority('Low'); // Reset to default
     }
   };
 
@@ -48,7 +48,6 @@ const NewTask: React.FC<NewTaskProps> = ({ onTaskAdded }) => {
         <option value="High">High</option>
         <option value="Medium">Medium</option>
         <option value="Low">Low</option>
-        <option value="Info">Info</option>
       </select>
       <button onClick={handleAddTask} disabled={!taskName.trim()}>
         Add Task

@@ -2,6 +2,7 @@
 import '../styles/studentinfo.css';
 import { useEffect, useState } from "react";
 
+
 // Define types for user and subject data
 interface UserData {
   session_id: string;
