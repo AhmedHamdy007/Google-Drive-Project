@@ -32,10 +32,12 @@ export default function Login() {
         const userData = result.data; // Assuming `result.data` contains user information
         const noMatrik = result.data.login_name; // Adjust this field based on your backend response
 
-        // Redirect to StudentInfo page with query parameters
-        router.push(
-          `/StudentInfo?data=${encodeURIComponent(JSON.stringify(userData))}&no_matrik=${encodeURIComponent(noMatrik)}`
-        );
+        // Save the user data and matric number in sessionStorage
+        sessionStorage.setItem("userData", JSON.stringify(userData));
+        sessionStorage.setItem("noMatrik", noMatrik);
+
+        // Redirect to StudentInfo page (without needing query params)
+        router.push("/dashboard");
       } else {
         const errorMessage = await response.json();
         console.error("Error response:", errorMessage);  // Log the error message from backend

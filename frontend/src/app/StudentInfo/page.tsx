@@ -1,12 +1,11 @@
 "use client";
 import '../styles/studentinfo.css';
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 // Define types for user and subject data
 interface UserData {
   session_id: string;
-  login_name: string;
+  login_name: string; // Matric number
   full_name: string;
   email: string;
   description: string;
@@ -26,53 +25,40 @@ export default function StudentInfo() {
   const [userData, setUserData] = useState<UserData | null>(null); // User data
   const [subjects, setSubjects] = useState<Subject[]>([]); // Subjects data
   const [error, setError] = useState(""); // Error handling
-  const searchParams = useSearchParams();
 
-  const rawData = searchParams.get("data"); // Retrieve user data from query params
-  const noMatrik = searchParams.get("no_matrik"); // Retrieve matric number from query params
-
-  // Parse user data on component mount
   useEffect(() => {
-    if (rawData) {
-      try {
-        setUserData(JSON.parse(rawData));
-      } catch {
-        setError("Invalid user data provided.");
-      }
+    // Retrieve user data and matric number from sessionStorage
+    const storedUserData = sessionStorage.getItem("userData");
+    const storedNoMatrik = sessionStorage.getItem("noMatrik");
+
+    if (storedUserData && storedNoMatrik) {
+      setUserData(JSON.parse(storedUserData)); // Set user data from sessionStorage
+      fetchSubjects(storedNoMatrik); // Fetch subjects based on matric number
     } else {
-      setError("No user data provided.");
+      setError("No user data found. Please log in again.");
     }
-  }, [rawData]);
+  }, []);
 
   // Fetch subjects data based on matric number
-  useEffect(() => {
-    if (!noMatrik) {
-      setError("Matric number is missing.");
-      return;
-    }
+  const fetchSubjects = async (noMatrik: string) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/user-subjects?no_matrik=${encodeURIComponent(
+          noMatrik
+        )}&sesi=2024/2025&semester=1`
+      );
 
-    const fetchSubjects = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/user-subjects?no_matrik=${encodeURIComponent(
-            noMatrik
-          )}&sesi=2024/2025&semester=1`
-        );
-
-        if (response.ok) {
-          const result = await response.json();
-          setSubjects(result);
-        } else {
-          const errorMessage = await response.json();
-          setError(errorMessage.message);
-        }
-      } catch (err) {
-        setError("An error occurred while fetching subjects.");
+      if (response.ok) {
+        const result = await response.json();
+        setSubjects(result);
+      } else {
+        const errorMessage = await response.json();
+        setError(errorMessage.message);
       }
-    };
-
-    fetchSubjects();
-  }, [noMatrik]);
+    } catch (err) {
+      setError("An error occurred while fetching subjects.");
+    }
+  };
 
   if (error) {
     return <p className="error">{error}</p>;
@@ -99,7 +85,7 @@ export default function StudentInfo() {
             <strong>Description:</strong> {userData.description}
           </p>
           <p>
-            <strong>Matric No:</strong> {userData.login_name}
+            <strong>Matric No:</strong> {userData.login_name} {/* Matric number */}
           </p>
         </div>
       ) : (
