@@ -1,52 +1,64 @@
-import React from 'react';
-import FolderContainer from './folderContainer';
-import DailyTasks from './DailyTasks';
-import Timetable from './timetable';
+"use client";
+import React, { useEffect, useState } from 'react';
+import LinkContainer from './LinkContainer';
 
-// Sample data
-const tasks = [
-  { name: 'Task1.pdf > App Dev', priority: 'Info' as const },
-  { name: 'SEO Analytics', priority: 'Medium' as const },
-  { name: 'Logo Design', priority: 'High' as const },
-  { name: 'Web Development', priority: 'Low' as const },
-];
-
-const folders = [
-  { name: 'Projects', color: 'red' as const },
-  { name: 'Assignments', color: 'blue' as const },
-  { name: 'Exams', color: 'yellow' as const },
-  { name: 'Notes', color: 'green' as const },
-];
-
-const classes = [
-  { day: 'Monday', time: '8:00 AM - 10:00 AM', className: 'App Development' },
-  { day: 'Tuesday', time: '10:00 AM - 12:00 PM', className: 'System Design' },
-  { day: 'Wednesday', time: '12:00 PM - 2:00 PM', className: 'Internet Programming' },
-  { day: 'Thursday', time: '2:00 PM - 4:00 PM', className: 'Web Systems' },
-];
-
-// Define days of the week and time slots
-const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-const timeSlots = [
-  '8:00 AM - 10:00 AM',
-  '10:00 AM - 12:00 PM',
-  '12:00 PM - 2:00 PM',
-  '2:00 PM - 4:00 PM',
-];
-
-const handleTaskClick = (task: { name: string; priority: 'Info' | 'Medium' | 'High' | 'Low' }) => {
-  console.log(`Task clicked: ${task.name}`);
-};
+interface Resource {
+  _id: string;
+  title: string;
+  url: string;
+  category: string;
+  referenceName: string; // Frontend expects this in camelCase
+  uploadedBy: string;    // Frontend expects this in camelCase
+}
 
 const MainContent: React.FC = () => {
+  const [links, setLinks] = useState<Resource[]>([]);
+
+  const fetchLinks = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/resources');
+      if (response.ok) {
+        const data = await response.json();
+
+        // Map backend response to match frontend structure
+        const transformedData = data.map((item: any) => ({
+          _id: item._id,
+          title: item.title,
+          url: item.url,
+          category: item.category,
+          referenceName: item.reference_name, // Map underscore to camelCase
+          uploadedBy: item.uploaded_by,      // Map underscore to camelCase
+        }));
+
+        setLinks(transformedData.slice(-4).reverse());
+      } else {
+        console.error('Failed to fetch resources.');
+      }
+    } catch (error) {
+      console.error('Error fetching resources:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLinks();
+  }, []);
+
+  const colorPalette = ['red', 'blue', 'yellow', 'green'] as const; // Explicitly define as a tuple
+
   return (
     <div className="main-content">
-      <FolderContainer folders={folders} />
-      <DailyTasks tasks={tasks} onTaskClick={handleTaskClick} />
-      <Timetable classes={classes} daysOfWeek={daysOfWeek} timeSlots={timeSlots} />
+      <LinkContainer
+        links={links.map((link, index) => ({
+          name: link.title,
+          url: link.url,
+          color: colorPalette[index % colorPalette.length], // Ensures type safety
+          category: link.category,
+          referenceName: link.referenceName,
+          uploadedBy: link.uploadedBy,
+        }))}
+      />
     </div>
   );
 };
 
 export default MainContent;
- 

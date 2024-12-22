@@ -2,7 +2,6 @@
 import '../styles/studentinfo.css';
 import { useEffect, useState } from "react";
 
-
 // Define types for user and subject data
 interface UserData {
   session_id: string;
@@ -66,13 +65,13 @@ export default function StudentInfo() {
   }
 
   return (
-    <div>
-      <h1>Student Info Dashboard</h1>
+    <div className="student-info-container">
+      <h1 className="page-title">Student Info Dashboard</h1>
 
       {/* User Information */}
       {userData ? (
-        <div>
-          <h2>User Information</h2>
+        <section className="user-info">
+          <h2 className="section-title">User Information</h2>
           <p>
             <strong>Full Name:</strong> {userData.full_name}
           </p>
@@ -88,39 +87,43 @@ export default function StudentInfo() {
           <p>
             <strong>Matric No:</strong> {userData.login_name} {/* Matric number */}
           </p>
-        </div>
+        </section>
       ) : (
-        <p>No user data available.</p>
+        <p className="no-data-message">No user data available.</p>
       )}
 
       {/* Subjects Information */}
-      <h2>Enrolled Subjects</h2>
-      {subjects.length > 0 ? (
-        <table>
-          <thead>
-            <tr>
-              <th>Subject Code</th>
-              <th>Subject Name</th>
-              <th>Section</th>
-              <th>Year</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {subjects.map((subject, index) => (
-              <tr key={index}>
-                <td>{subject.kod_subjek}</td>
-                <td>{subject.nama_subjek}</td>
-                <td>{subject.seksyen}</td>
-                <td>{subject.tahun_kursus}</td>
-                <td>{subject.status}</td>
+      <section className="subjects-info">
+        <h2 className="section-title">Enrolled Subjects</h2>
+        {subjects.length > 0 ? (
+          <table className="subjects-table">
+            <thead>
+              <tr>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th>Section</th>
+                <th>Year</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No subjects found for sesi: 2024/2025 and semester: 1.</p>
-      )}
+            </thead>
+            <tbody>
+              {subjects.map((subject, index) => (
+                <tr key={index}>
+                  <td>{subject.kod_subjek}</td>
+                  <td>{subject.nama_subjek}</td>
+                  <td>{subject.seksyen}</td>
+                  <td>{subject.tahun_kursus}</td>
+                  <td>{subject.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p className="no-data-message">
+            No subjects found for sesi: 2024/2025 and semester: 1.
+          </p>
+        )}
+      </section>
     </div>
   );
 }

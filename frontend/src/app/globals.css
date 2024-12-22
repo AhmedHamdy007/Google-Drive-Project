@@ -1,77 +1,107 @@
-/* General Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Body */
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f5f7fb;
-    color: #333;
-  }
-  
-  /* Table Styling */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-  }
-  
-  th, td {
-    padding: 10px 15px;
-    text-align: left;
-  }
-  
-  th {
-    background-color: #4a90e2;
-    color: #ffffff;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f5f8fa;
-  }
-  
-  tr:nth-child(odd) {
-    background-color: #ffffff;
-  }
-  
-  td {
-    font-size: 0.9rem;
-    color: #555;
-  }
-  
-  table, th, td {
-    border: 1px solid #ddd;
-  }
-  
-  tr:hover {
-    background-color: #e8f4ff;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    table, th, td {
-      font-size: 0.85rem;
-    }
-  
-    h1, h2 {
-      font-size: 1.4rem;
-    }
-  
-    p {
-      font-size: 0.9rem;
-    }
-  }
-  /* General Button Styles (Could be used throughout the app) */
-button {
+/* Globals */
+.layout-container {
+  display: flex;
+  height: 100vh;
+  padding: 0; /* Remove padding if present */
+  margin: 0; /* Remove unnecessary margins */
+}
+
+
+.sidebar-container {
+  width: 250px; /* Fixed width for the sidebar */
+  background-color: #ffffff;
+  color: white; /* Sidebar text color */
+  display: flex;
+  flex-direction: column; 
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.content-container {
+  flex: 1; /* Take up the remaining space */
+  padding: 20px; /* Padding for content */
+  background-color: #f5f7fb; /* Background for content */
+  overflow-y: auto; /* Allow vertical scrolling */
+}
+.sidebar h2 {
+  font-size: 24px;
+  color: #FF8C00;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  font-size: 18px;
+  color: #333;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  padding: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+.sidebar ul li:hover {
+  background-color: #FF8C00;
+  color: #fff;
+}
+a {
+  color: inherit; /* Inherit text color from parent element */
+  text-decoration: none; /* Remove underline */
+}
+
+/* Add custom hover effect for links */
+a:hover {
+  text-decoration: underline; /* Optional: Add underline on hover */
+  color: #0070f3; /* Optional: Custom hover color */
+}
+
+/* Add Task Button */
+button {
+  padding: 10px 20px;
+  background-color: #4e8bff;
+  color: white;
+  border: none;
   border-radius: 5px;
-  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  opacity: 0.9;
+  background-color: #3b74d1;
+}
+
+.daily-tasks {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.daily-tasks .task {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  color: white;
+}
+
+.task.blue {
+  background-color: #4dabf7;
+}
+
+.task.yellow {
+  background-color: #ffc107;
+}
+
+.task.red {
+  background-color: #ff6b6b;
+}
+
+.task.green {
+  background-color: #51cf66;
 }

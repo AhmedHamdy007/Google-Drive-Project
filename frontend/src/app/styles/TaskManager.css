@@ -1,9 +1,4 @@
-/* General container layout for Task Manager */
-.container {
-  display: flex; /* Display Sidebar and main content side by side */
-  height: 100vh; /* Full viewport height */
-  width: 100%;
-}
+
 
 /* Main content layout */
 .main-content {
@@ -13,27 +8,8 @@
   position: relative;
 }
 
-/* Heading */
-h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #333;
-}
 
-/* Add Task Button */
-.add-task-btn {
-  padding: 10px 20px;
-  background-color: #4e8bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
 
-.add-task-btn:hover {
-  background-color: #3b74d1;
-}
 
 /* Daily Tasks Section */
 .daily-tasks {

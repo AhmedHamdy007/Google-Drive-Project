@@ -29,9 +29,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* Only render Sidebar if it's not the Login page */}
-        {!isLoginPage && <Sidebar />}
-        <main>{children}</main>
+        <div className="layout-container">
+          {/* Sidebar container */}
+          {!isLoginPage && (
+            <div className="sidebar-container">
+              <Sidebar />
+            </div>
+          )}
+          {/* Main content container */}
+          <div className="content-container">
+            <main>{children}</main>
+          </div>
+        </div>
       </body>
     </html>
   );
