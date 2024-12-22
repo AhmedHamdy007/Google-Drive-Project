@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import "../styles/lecturerUploadLinks.css"; // Link to the styles
 
-// Define types for the form fields
 interface LinkData {
   category: string;
   referenceName: string;
@@ -20,7 +19,14 @@ const LecturerUploadLinks: React.FC = () => {
     url: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const [message, setMessage] = useState<string | null>(null); // Success/error message
+  const [messageType, setMessageType] = useState<"success" | "error" | null>(null); // Message type for styling
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     const { name, value } = e.target;
     setLinkData((prevData) => ({
       ...prevData,
@@ -28,15 +34,65 @@ const LecturerUploadLinks: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitted link data:", linkData);
-    // Add logic here to handle the form submission (e.g., sending data to the server)
+
+    try {
+      const response = await fetch("http://localhost:5000/resources", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          category: linkData.category,
+          reference_name: linkData.referenceName,
+          session_semester: linkData.sessionSemester,
+          description: linkData.description,
+          url: linkData.url,
+          uploaded_by: "Dr. Lecturer Name", // Replace with dynamic data
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setMessage("Resource uploaded successfully!"); // Success message
+        setMessageType("success");
+        setLinkData({
+          category: "",
+          referenceName: "",
+          sessionSemester: "",
+          description: "",
+          url: "",
+        }); // Reset the form
+      } else {
+        const error = await response.json();
+        setMessage("Error: " + error.message); // Error message
+        setMessageType("error");
+      }
+    } catch (err) {
+      console.error("Error uploading link:", err);
+      setMessage("An error occurred. Please try again."); // Error message
+      setMessageType("error");
+    }
+
+    // Clear the message after a few seconds
+    setTimeout(() => {
+      setMessage(null);
+      setMessageType(null);
+    }, 5000);
   };
 
   return (
     <div className="upload-links-container">
       <h1>Lecturer: Upload Course Links</h1>
+
+      {/* Display success or error message */}
+      {message && (
+        <div className={`message-banner ${messageType}`}>
+          <p>{message}</p>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="upload-links-form">
         <div className="form-group">
           <label htmlFor="category">Category</label>
@@ -47,11 +103,14 @@ const LecturerUploadLinks: React.FC = () => {
             required
           >
             <option value="">Select Category</option>
-            <option value="Course Material">Course Material</option>
-            <option value="Assignment">Assignment</option>
-            <option value="Lecture Notes">Lecture Notes</option>
-            <option value="Exam Papers">Exam Papers</option>
-            <option value="Other">Other</option>
+            <option value="Course Files">Course Files</option>
+            <option value="Course Coordination">Course Coordination</option>
+            <option value="Research">Research</option>
+            <option value="Internship">Internship</option>
+            <option value="PSM 1">PSM 1</option>
+            <option value="Timetable">Timetable</option>
+            <option value="Training/Workshop">Training/Workshop</option>
+            <option value="Meeting">Meeting</option>
           </select>
         </div>
 
@@ -102,7 +161,9 @@ const LecturerUploadLinks: React.FC = () => {
           />
         </div>
 
-        <button type="submit" className="submit-btn">Upload Link</button>
+        <button type="submit" className="submit-btn">
+          Upload Link
+        </button>
       </form>
     </div>
   );
