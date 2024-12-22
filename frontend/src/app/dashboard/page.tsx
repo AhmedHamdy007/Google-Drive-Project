@@ -3,14 +3,15 @@
 import MainContent from '../components/MainContent';
 import '../styles/dashboard.css'; // Import the CSS file
 
-const Page: React.FC = () => {
+const DashboardPage: React.FC = () => {
   return (
-     
-    <div className="container">
-      <MainContent />
+    <div className="dashboard-container">
+      {/* Main content section */}
+      <section className="main-content">
+        <MainContent />
+      </section>
     </div>
-  
   );
 };
 
-export default Page;
+export default DashboardPage;
