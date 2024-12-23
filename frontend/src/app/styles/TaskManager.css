@@ -1,25 +1,57 @@
-
-
-/* Main content layout */
-.main-content {
-  flex: 1; /* Take up remaining space */
+/* Main Task Manager Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #f5f7fb; /* Matches global content-container background */
   padding: 20px;
-  text-align: center;
-  position: relative;
+  border-radius: 8px;
 }
 
+/* Main Content Section */
+.main-content {
+  text-align: center;
+  background-color: #ffffff; /* Match global modal and task cards */
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 800px; /* Responsive central content width */
+}
 
-
+/* Title Styling */
+.main-content h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #4e8bff; /* Matches button styling */
+}
 
 /* Daily Tasks Section */
 .daily-tasks {
-  margin: 20px auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
+  margin: 20px 0;
 }
 
-/* Modal Styling */
+/* Add Task Button */
+.add-task-btn {
+  padding: 10px 20px;
+  background-color: #4e8bff; /* Matches global button styles */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.add-task-btn:hover {
+  background-color: #3b74d1; /* Matches global hover effect */
+}
+
+/* Modal Overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -30,17 +62,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
+/* Modal Content */
 .modal {
-  background-color: white;
+  background-color: #ffffff;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px; /* Limits modal width for responsiveness */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   text-align: left;
-  width: 300px;
 }
 
+/* Modal Header */
+.modal h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Modal Form Elements */
 .modal label {
   display: block;
   margin-bottom: 10px;
@@ -50,41 +93,36 @@
 .modal input,
 .modal select {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
 
-/* Modal buttons */
+/* Modal Buttons */
 .modal button {
-  padding: 10px;
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
   margin-right: 10px;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .modal button:nth-child(1) {
-  background-color: #4e8bff;
+  background-color: #4e8bff; /* Matches add-task-btn */
   color: white;
+}
+
+.modal button:nth-child(1):hover {
+  background-color: #3b74d1; /* Hover effect consistency */
 }
 
 .modal button:nth-child(2) {
-  background-color: #f44336;
+  background-color: #f44336; /* Cancel button red */
   color: white;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column; /* Stack Sidebar and Content */
-  }
-
-  .sidebar {
-    width: 100%; /* Full width for sidebar on small screens */
-  }
-
-  .main-content {
-    width: 100%;
-  }
+.modal button:nth-child(2):hover {
+  background-color: #d73833;
 }

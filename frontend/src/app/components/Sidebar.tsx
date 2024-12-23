@@ -40,7 +40,7 @@ const Sidebar: React.FC = () => {
           </Link>
         </li>
         <li>
-          <Link href="/TaskManager" legacyBehavior>
+          <Link href="/tasks" legacyBehavior>
             <a>Tasks Manager</a>
           </Link>
         </li>

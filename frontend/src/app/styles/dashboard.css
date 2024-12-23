@@ -18,3 +18,58 @@
 /* Folders in the Dashboard */
 
 /* Daily Tasks Section */
+/* Main Content Layout */
+.main-content-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Links Section */
+.links-section {
+  flex: 3; /* Takes more space */
+  background-color: #f5f7fb;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tasks Section */
+.tasks-section {
+  flex: 1; /* Smaller section for tasks */
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tasks-title {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.task-card {
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: #fff;
+}
+
+.task-card.low {
+  background-color: #4dabf7;
+}
+
+.task-card.medium {
+  background-color: #ffc107;
+}
+
+.task-card.high {
+  background-color: #ff6b6b;
+}
+
+.no-tasks {
+  color: #999;
+  font-style: italic;
+}
