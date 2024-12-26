@@ -151,7 +151,10 @@ export default function TimetablePage() {
               : setNewEntry({ ...newEntry, location: e.target.value })
           }
         />
-        <button onClick={editingEntry ? handleUpdateEntry : handleCreateEntry}>
+        <button
+          className="add-btn"
+          onClick={editingEntry ? handleUpdateEntry : handleCreateEntry}
+        >
           {editingEntry ? "Update Entry" : "Add Entry"}
         </button>
       </div>
@@ -180,16 +183,20 @@ export default function TimetablePage() {
                           <strong>{entry.subject}</strong>
                           <br />
                           <small>{entry.location}</small>
-                          <button
-                            onClick={() => setEditingEntry(entry)}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDeleteEntry(entry._id)}
-                          >
-                            Delete
-                          </button>
+                          <div>
+                            <button
+                              className="edit-btn"
+                              onClick={() => setEditingEntry(entry)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="delete-btn"
+                              onClick={() => handleDeleteEntry(entry._id)}
+                            >
+                              Delete
+                            </button>
+                          </div>
                         </div>
                       ))}
                   </td>
