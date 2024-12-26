@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Timetable from '../components/timetable'; // Import the Timetable component
-import '../styles/timetable.css';
+import '../styles/timetabl1e.css';
 
 type ClassEntry = {
   day: string;

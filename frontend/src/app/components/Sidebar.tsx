@@ -35,12 +35,12 @@ const Sidebar: React.FC = () => {
           </li>
         )}
         <li>
-          <Link href="/TimetableManager" legacyBehavior>
+          <Link href="/timetable" legacyBehavior>
             <a>Timetable</a>
           </Link>
         </li>
         <li>
-          <Link href="/TaskManager" legacyBehavior>
+          <Link href="/tasks" legacyBehavior>
             <a>Tasks Manager</a>
           </Link>
         </li>

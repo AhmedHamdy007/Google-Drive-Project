@@ -1,0 +1,36 @@
+/* Timetable Manager Layout */
+.timetable-manager {
+  display: flex;
+}
+
+.manager-content {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Weekly Timetable Styles */
+.weekly-timetable table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.weekly-timetable th, .weekly-timetable td {
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.weekly-timetable .event {
+  background-color: #4dabf7;
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.weekly-timetable .empty-slot {
+  color: #ccc;
+}
