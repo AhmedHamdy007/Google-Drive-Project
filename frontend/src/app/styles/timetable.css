@@ -28,6 +28,124 @@
   margin-right: auto;
 }
 
+/* General button styling */
+button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Edit button */
+button.edit-btn {
+  background-color: #4e8bff; /* Sky blue */
+  color: white;
+  border-radius: 12px; /* Rounded corners */
+  padding: 8px 15px;
+}
+
+button.edit-btn:hover {
+  background-color: #3b74d1;
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+/* Delete button */
+button.delete-btn {
+  background-color: #f44336; /* Red */
+  color: white;
+  border-radius: 12px; /* Rounded corners */
+  padding: 8px 15px;
+}
+
+button.delete-btn:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
+}
+
+/* Add button styling */
+button.add-btn {
+  background-color: #4e8bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.add-btn:hover {
+  background-color: #3b74d1;
+}
+
+/* Timetable table styling */
+.timetable-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.timetable-table th,
+.timetable-table td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.timetable-table th {
+  background-color: #4e8bff; /* Sky blue */
+  color: white;
+}
+
+.timetable-table td {
+  background-color: #f9f9f9;
+}
+
+.timetable-cell {
+  min-height: 70px; /* Ensure the cell has enough height */
+  position: relative;
+}
+
+.timetable-entry {
+  position: relative;
+  padding: 8px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+/* Buttons in the timetable entries */
+.timetable-entry button {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  font-size: 0.8rem;
+}
+
+.timetable-entry button + button {
+  left: 80px; /* Adjust for the second button */
+}
+
+/* Optional: Add an icon to buttons (optional but recommended for better UX) */
+button.edit-btn::before {
+  content: "✏️"; /* Pencil icon for edit */
+  margin-right: 5px;
+}
+
+button.delete-btn::before {
+  content: "🗑️"; /* Trash icon for delete */
+  margin-right: 5px;
+}
+
+/* Form and Input Styling */
 .timetable-form h2 {
   font-size: 1.5rem;
   color: #333;
@@ -66,17 +184,6 @@
 /* Timetable Table */
 .timetable-grid {
   overflow-x: auto;
-}
-
-.timetable-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: center;
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
 }
 
 .timetable-table th,

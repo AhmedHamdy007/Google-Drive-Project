@@ -25,6 +25,8 @@ export default function StudentInfo() {
   const [userData, setUserData] = useState<UserData | null>(null); // User data
   const [subjects, setSubjects] = useState<Subject[]>([]); // Subjects data
   const [error, setError] = useState(""); // Error handling
+  const [session, setSession] = useState("2024/2025"); // Default to "2024/2025"
+  const [semester, setSemester] = useState("1"); // Default to "1"
 
   useEffect(() => {
     // Retrieve user data and matric number from sessionStorage
@@ -33,20 +35,19 @@ export default function StudentInfo() {
 
     if (storedUserData && storedNoMatrik) {
       setUserData(JSON.parse(storedUserData)); // Set user data from sessionStorage
-      fetchSubjects(storedNoMatrik); // Fetch subjects based on matric number
+      fetchSubjects(storedNoMatrik, session, semester); // Fetch subjects based on matric number, session, and semester
     } else {
       setError("No user data found. Please log in again.");
     }
-  }, []);
+  }, [session, semester]); // Trigger re-fetch when session or semester changes
 
-  // Fetch subjects data based on matric number
-  //gets the subjects for the last semester 
-  const fetchSubjects = async (noMatrik: string) => {
+  // Fetch subjects data based on matric number, session, and semester
+  const fetchSubjects = async (noMatrik: string, sesi: string, semester: string) => {
     try {
       const response = await fetch(
         `http://localhost:5000/user-subjects?no_matrik=${encodeURIComponent(
           noMatrik
-        )}&sesi=2024/2025&semester=1`
+        )}&sesi=${encodeURIComponent(sesi)}&semester=${encodeURIComponent(semester)}`
       );
 
       if (response.ok) {
@@ -59,6 +60,14 @@ export default function StudentInfo() {
     } catch (err) {
       setError("An error occurred while fetching subjects.");
     }
+  };
+
+  const handleSessionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSession(e.target.value);
+  };
+
+  const handleSemesterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSemester(e.target.value);
   };
 
   if (error) {
@@ -93,6 +102,29 @@ export default function StudentInfo() {
         <p className="no-data-message">No user data available.</p>
       )}
 
+      {/* Session and Semester Selection */}
+      <section className="filters">
+        <h2 className="section-title">Filter Subjects</h2>
+        <div className="filter-group">
+          <label htmlFor="session">Session</label>
+          <select name="session" id="session" value={session} onChange={handleSessionChange} required>
+            <option value="2020/2021">2020/2021</option>
+            <option value="2021/2022">2021/2022</option>
+            <option value="2022/2023">2022/2023</option>
+            <option value="2023/2024">2023/2024</option>
+            <option value="2024/2025">2024/2025</option>
+          </select>
+        </div>
+
+        <div className="filter-group">
+          <label htmlFor="semester">Semester</label>
+          <select name="semester" id="semester" value={semester} onChange={handleSemesterChange} required>
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+          </select>
+        </div>
+      </section>
+
       {/* Subjects Information */}
       <section className="subjects-info">
         <h2 className="section-title">Enrolled Subjects</h2>
@@ -121,7 +153,7 @@ export default function StudentInfo() {
           </table>
         ) : (
           <p className="no-data-message">
-            No subjects found for sesi: 2024/2025 and semester: 1.
+            No subjects found for sesi: {session} and semester: {semester}.
           </p>
         )}
       </section>
