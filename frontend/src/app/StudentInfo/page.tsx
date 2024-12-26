@@ -40,7 +40,7 @@ export default function StudentInfo() {
   }, []);
 
   // Fetch subjects data based on matric number
-  //gets the subjects for the last semester only
+  //gets the subjects for the last semester 
   const fetchSubjects = async (noMatrik: string) => {
     try {
       const response = await fetch(
