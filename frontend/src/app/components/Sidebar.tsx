@@ -35,7 +35,7 @@ const Sidebar: React.FC = () => {
           </li>
         )}
         <li>
-          <Link href="/TimetableManager" legacyBehavior>
+          <Link href="/timetable" legacyBehavior>
             <a>Timetable</a>
           </Link>
         </li>

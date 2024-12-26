@@ -3,6 +3,7 @@ const cors = require('cors');
 const connectDB = require('./db'); // Import connectDB function
 require('dotenv').config();
 const taskRoutes = require('./routes/tasks');
+const timetableRoutes = require('./routes/timetable');
 
 const app = express();
 const port = 5000;
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
 app.use('/users', require('./routes/users'));
 app.use('/resources', require('./routes/resources'));
 app.use('/api/tasks', taskRoutes);
+app.use('/api/timetable', timetableRoutes);
 
 // Start server
 app.listen(port, () => {
