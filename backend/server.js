@@ -4,6 +4,7 @@ const connectDB = require('./db'); // Import connectDB function
 require('dotenv').config();
 const taskRoutes = require('./routes/tasks');
 const timetableRoutes = require('./routes/timetable');
+const resourceRoutes = require('./routes/resources'); // Import your resources routes file
 
 const app = express();
 const port = 5000;
@@ -19,13 +20,13 @@ connectDB();
 app.use(require('./routes/auth'));
 app.use(require('./routes/userSubjects'));
 app.use(require('./routes/lecturerCourses'));
+app.use('/api/resources', resourceRoutes); // Mount the resources routes at /api/resources
 
 // Default route
 app.get('/', (req, res) => {
     res.send('Backend is running...');
 });
 app.use('/users', require('./routes/users'));
-app.use('/resources', require('./routes/resources'));
 app.use('/api/tasks', taskRoutes);
 app.use('/api/timetable', timetableRoutes);
 

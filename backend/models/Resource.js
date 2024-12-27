@@ -9,8 +9,12 @@ const ResourceSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    session_semester: {
+    session: {
         type: String,
+        required: true,
+    },
+    semester: {
+        type: Number,  // Store the semester as 1 or 2
         required: true,
     },
     description: {
@@ -29,6 +33,10 @@ const ResourceSchema = new mongoose.Schema({
     },
     uploaded_by: {
         type: String, // Stores the lecturer's name or ID
+        required: true,
+    },
+    course: {
+        type: String, // Single course code that this resource is associated with
         required: true,
     },
 }, { timestamps: true }); // Automatically adds createdAt and updatedAt fields

@@ -1,11 +1,14 @@
 "use client";
 import React, { useState } from "react";
+import { uploadResource } from "../lib/api/apiResources"; // Import the uploadResource function
 import "../styles/lecturerUploadLinks.css"; // Link to the styles
 
 interface LinkData {
   category: string;
   referenceName: string;
-  sessionSemester: string;
+  session: string;
+  semester: string;
+  course: string;
   description: string;
   url: string;
 }
@@ -14,7 +17,9 @@ const LecturerUploadLinks: React.FC = () => {
   const [linkData, setLinkData] = useState<LinkData>({
     category: "",
     referenceName: "",
-    sessionSemester: "",
+    session: "2024/2025", // Default session
+    semester: "1", // Default semester
+    course: "",
     description: "",
     url: "",
   });
@@ -22,10 +27,9 @@ const LecturerUploadLinks: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null); // Success/error message
   const [messageType, setMessageType] = useState<"success" | "error" | null>(null); // Message type for styling
 
+  // Handle change for form inputs
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setLinkData((prevData) => ({
@@ -34,43 +38,26 @@ const LecturerUploadLinks: React.FC = () => {
     }));
   };
 
+  // Handle the form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/resources", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          category: linkData.category,
-          reference_name: linkData.referenceName,
-          session_semester: linkData.sessionSemester,
-          description: linkData.description,
-          url: linkData.url,
-          uploaded_by: "Dr. Lecturer Name", // Replace with dynamic data
-        }),
-      });
+      // Use the uploadResource utility function to upload the resource
+      const result = await uploadResource(linkData);
 
-      if (response.ok) {
-        const result = await response.json();
-        setMessage("Resource uploaded successfully!"); // Success message
-        setMessageType("success");
-        setLinkData({
-          category: "",
-          referenceName: "",
-          sessionSemester: "",
-          description: "",
-          url: "",
-        }); // Reset the form
-      } else {
-        const error = await response.json();
-        setMessage("Error: " + error.message); // Error message
-        setMessageType("error");
-      }
+      setMessage("Resource uploaded successfully!"); // Success message
+      setMessageType("success");
+      setLinkData({
+        category: "",
+        referenceName: "",
+        session: "2024/2025",
+        semester: "1",
+        course: "",
+        description: "",
+        url: "",
+      }); // Reset the form
     } catch (err) {
-      console.error("Error uploading link:", err);
       setMessage("An error occurred. Please try again."); // Error message
       setMessageType("error");
     }
@@ -94,6 +81,7 @@ const LecturerUploadLinks: React.FC = () => {
       )}
 
       <form onSubmit={handleSubmit} className="upload-links-form">
+        {/* Category */}
         <div className="form-group">
           <label htmlFor="category">Category</label>
           <select
@@ -114,6 +102,7 @@ const LecturerUploadLinks: React.FC = () => {
           </select>
         </div>
 
+        {/* Reference Name */}
         <div className="form-group">
           <label htmlFor="referenceName">Reference Name</label>
           <input
@@ -126,18 +115,50 @@ const LecturerUploadLinks: React.FC = () => {
           />
         </div>
 
+        {/* Session and Semester */}
         <div className="form-group">
-          <label htmlFor="sessionSemester">Session-Semester</label>
+          <label htmlFor="session">Session</label>
+          <select
+            name="session"
+            value={linkData.session}
+            onChange={handleChange}
+            required
+          >
+            <option value="2020/2021">2020/2021</option>
+            <option value="2021/2022">2021/2022</option>
+            <option value="2022/2023">2022/2023</option>
+            <option value="2023/2024">2023/2024</option>
+            <option value="2024/2025">2024/2025</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="semester">Semester</label>
+          <select
+            name="semester"
+            value={linkData.semester}
+            onChange={handleChange}
+            required
+          >
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+          </select>
+        </div>
+
+        {/* Course Code (as text input) */}
+        <div className="form-group">
+          <label htmlFor="course">Course Code</label>
           <input
             type="text"
-            name="sessionSemester"
-            value={linkData.sessionSemester}
+            name="course"
+            value={linkData.course}
             onChange={handleChange}
-            placeholder="Enter Session-Semester (e.g., 2024/2025 - Semester 1)"
+            placeholder="Enter Course Code (e.g., SECJ3203)"
             required
           />
         </div>
 
+        {/* Description */}
         <div className="form-group">
           <label htmlFor="description">Description</label>
           <textarea
@@ -149,6 +170,7 @@ const LecturerUploadLinks: React.FC = () => {
           />
         </div>
 
+        {/* URL Link */}
         <div className="form-group">
           <label htmlFor="url">URL Link</label>
           <input
