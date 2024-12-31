@@ -1,56 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import '../styles/sidebar.css';
 
-const Sidebar: React.FC = () => {
-  const [role, setRole] = useState<string | null>(null); // State to store user role
+const Sidebar: React.FC<{ onSectionChange: (section: string) => void }> = ({ onSectionChange }) => {
+  const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch user data from sessionStorage
-    const userData = sessionStorage.getItem('userData');
+    const userData = sessionStorage.getItem("userData");
     if (userData) {
       const parsedUserData = JSON.parse(userData);
-      setRole(parsedUserData.description); // Extract and set role (description)
+      setRole(parsedUserData.description);
     }
   }, []);
 
   return (
-    <nav className="sidebar" role="navigation" aria-label="Main Navigation">
+    <nav className="sidebar">
       <h2>EduSync</h2>
       <ul>
         <li>
-          <Link href="/dashboard">Dashboard</Link>
+          <button onClick={() => onSectionChange("dashboard")}>Dashboard</button>
         </li>
         <li>
-          <Link href="/sharedLinks" legacyBehavior>
-            <a>Shared Links</a>
-          </Link>
+          <button onClick={() => onSectionChange("sharedLinks")}>Shared Links</button>
         </li>
-        {/* Conditionally render "Upload Resources" for Pensyarah only */}
-        {role === 'Pensyarah' && (
+        {role === "Pensyarah" && (
           <li>
-            <Link href="/LecturerUploadLinks" legacyBehavior>
-              <a>Upload Resources</a>
-            </Link>
+            <button onClick={() => onSectionChange("LecturerUploadLinks")}>Upload Resources</button>
           </li>
         )}
         <li>
-          <Link href="/timetable" legacyBehavior>
-            <a>Timetable</a>
-          </Link>
+          <button onClick={() => onSectionChange("timetable")}>Timetable</button>
         </li>
         <li>
-          <Link href="/tasks" legacyBehavior>
-            <a>Tasks Manager</a>
-          </Link>
+          <button onClick={() => onSectionChange("tasks")}>Tasks Manager</button>
         </li>
         <li>
-          <Link href="/StudentInfo">Student Info</Link>
+          <button onClick={() => onSectionChange("studentInfo")}>Student Info</button>
         </li>
         <li>
-          <Link href="/settings" legacyBehavior>
-            <a>Settings</a>
-          </Link>
+          <button onClick={() => onSectionChange("settings")}>Settings</button>
         </li>
       </ul>
     </nav>
