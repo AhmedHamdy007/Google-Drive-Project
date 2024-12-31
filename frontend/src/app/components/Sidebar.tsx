@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import '../styles/sidebar.css';
+import React, { useEffect, useState } from "react";
+import "../styles/sidebar.css";
 
 const Sidebar: React.FC<{ onSectionChange: (section: string) => void }> = ({ onSectionChange }) => {
   const [role, setRole] = useState<string | null>(null);
@@ -24,7 +24,9 @@ const Sidebar: React.FC<{ onSectionChange: (section: string) => void }> = ({ onS
         </li>
         {role === "Pensyarah" && (
           <li>
-            <button onClick={() => onSectionChange("LecturerUploadLinks")}>Upload Resources</button>
+            <button onClick={() => onSectionChange("LecturerUploadLinks")}>
+              Upload Resources
+            </button>
           </li>
         )}
         <li>

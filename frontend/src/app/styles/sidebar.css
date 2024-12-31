@@ -1,0 +1,70 @@
+/* Sidebar Container */
+.sidebar {
+    width: 250px; /* Fixed width for the sidebar */
+    height: 100vh; /* Full height */
+    background-color: var(--primary-color); /* Primary color from global.css */
+    color: rgb(255, 255, 255); /* Text color for contrast */
+    position: fixed; /* Fixed on the left side */
+    top: 0;
+    left: 0;
+    padding: 20px;
+    display: flex; /* Flexbox for vertical layout */
+    flex-direction: column;
+    overflow-y: auto; /* Scrollable if content overflows */
+  }
+  
+  /* Sidebar Title */
+  .sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  /* Sidebar Menu */
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Sidebar Menu Items */
+  .sidebar li {
+    margin-bottom: 15px;
+  }
+  
+  /* Sidebar Buttons */
+  .sidebar button {
+    width: 100%; /* Full width */
+    padding: 10px;
+    font-size: 1rem;
+    background: transparent; /* Transparent background */
+    color: white; /* Text color */
+    border: none; /* No border */
+    text-align: left; /* Align text to the left */
+    cursor: pointer; /* Pointer cursor for hover effect */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+  }
+  
+  /* Sidebar Button Hover */
+  .sidebar button:hover {
+    background-color: #357abd; /* Slightly darker blue for hover */
+    border-radius: var(--border-radius); /* Use border-radius from global.css */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 200px; /* Adjust sidebar width for smaller screens */
+      padding: 15px;
+    }
+  
+    .sidebar h2 {
+      font-size: 1.2rem; /* Smaller font size for the title */
+    }
+  
+    .sidebar button {
+      font-size: 0.9rem; /* Slightly smaller buttons */
+    }
+  }
+  
