@@ -34,6 +34,11 @@ const Sidebar: React.FC<{ onSectionChange: (section: string) => void }> = ({ onS
             <button onClick={() => onSectionChange('LecturerUploadLinks')}>Upload Resources</button>
           </li>
         )}
+          {role == 'Pensyarah' &&(
+          <li>
+          <button onClick={() => onSectionChange("lecturerLinks")}>My Links</button>
+        </li>
+        )}
         <li>
           <button onClick={() => onSectionChange('timetable')}>Timetable</button>
         </li>

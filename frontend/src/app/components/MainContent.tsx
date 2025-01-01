@@ -10,12 +10,14 @@ const TimetablePage = dynamic(() => import("../timetable/page"), { ssr: false })
 const SharedResources = dynamic(() => import("../sharedLinks/page"), { ssr: false });
 const StudentInfo = dynamic(() => import("../StudentInfo/page"), { ssr: false });
 const LecturerUploadLinks = dynamic(() => import("../LecturerUploadLinks/page"), { ssr: false });
+const LecturerLinks = dynamic(() => import("../components/LecturerLinks"), { ssr: false }); // Add LecturerLinks
 
 interface MainContentProps {
   activeSection: string;
+  onSectionChange: (section: string) => void; // Add this prop
 }
 
-const MainContent: React.FC<MainContentProps> = ({ activeSection }) => {
+const MainContent: React.FC<MainContentProps> = ({ activeSection, onSectionChange }) => {
   const renderContent = () => {
     switch (activeSection) {
       case "dashboard":
@@ -29,7 +31,9 @@ const MainContent: React.FC<MainContentProps> = ({ activeSection }) => {
       case "studentInfo":
         return <StudentInfo />;
       case "LecturerUploadLinks":
-        return <LecturerUploadLinks />;
+        return <LecturerUploadLinks onSectionChange={onSectionChange} />; // Pass the prop
+      case "lecturerLinks":
+        return <LecturerLinks />;
       default:
         return <Dashboard />;
     }

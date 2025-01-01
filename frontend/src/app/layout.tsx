@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             {/* Main Content (Next to the sidebar) */}
             <div className="main-contentg">
-              <MainContent activeSection={activeSection} />
+              <MainContent activeSection={activeSection} onSectionChange={setActiveSection} />
             </div>
           </div>
         </body>

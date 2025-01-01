@@ -1,0 +1,17 @@
+.sidebar .logout-button {
+  background-color: #ff4d4f; /* Red for logout */
+  color: white;
+  border: none;
+  text-align: center;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border-radius: var(--border-radius);
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar .logout-button:hover {
+  background-color: #d32f2f; /* Darker red on hover */
+}
