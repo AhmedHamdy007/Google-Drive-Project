@@ -90,5 +90,40 @@ router.get('/user', async (req, res) => {
   }
 });
 
+// PUT /resources/:id - Update a specific resource by ID
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const updatedResource = await Resource.findByIdAndUpdate(id, req.body, { new: true });
+
+    if (!updatedResource) {
+      return res.status(404).json({ message: 'Resource not found.' });
+    }
+
+    res.status(200).json({ message: 'Resource updated successfully.', resource: updatedResource });
+  } catch (error) {
+    console.error('Error updating resource:', error);
+    res.status(500).json({ message: 'Error updating resource.' });
+  }
+});
+
+// DELETE /resources/:id - Delete a specific resource by ID
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedResource = await Resource.findByIdAndDelete(id);
+
+    if (!deletedResource) {
+      return res.status(404).json({ message: 'Resource not found.' });
+    }
+
+    res.status(200).json({ message: 'Resource deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting resource:', error);
+    res.status(500).json({ message: 'Error deleting resource.' });
+  }
+});
 
 module.exports = router;  // Export the router so it can be used in server.js  // Export the router so it can be used in server.js

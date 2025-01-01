@@ -64,7 +64,7 @@ export const uploadResource = async (linkData) => {
 // Function to delete a resource by its ID
 export const deleteResource = async (id) => {
   try {
-    const response = await axios.delete(`${API_BASE_URL}/${id}`);
+    const response = await axios.delete(`${API_BASE_URL}/${id}`); // Pass _id
     return response.data;
   } catch (error) {
     console.error("Error deleting resource:", error);
