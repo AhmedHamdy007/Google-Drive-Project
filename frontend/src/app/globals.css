@@ -110,6 +110,23 @@ body {
   height: 100vh;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
 }
+.logout-button {
+  background-color: #ff4d4f; /* Red for logout */
+  color: white;
+  border: none;
+  text-align: center;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border-radius: var(--border-radius);
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f; /* Darker red on hover */
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {

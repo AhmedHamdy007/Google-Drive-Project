@@ -1,47 +1,54 @@
-import React, { useEffect, useState } from "react";
-import "../styles/sidebar.css";
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import '../styles/sidebar.css';
 
 const Sidebar: React.FC<{ onSectionChange: (section: string) => void }> = ({ onSectionChange }) => {
   const [role, setRole] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const userData = sessionStorage.getItem("userData");
+    const userData = sessionStorage.getItem('userData');
     if (userData) {
       const parsedUserData = JSON.parse(userData);
       setRole(parsedUserData.description);
     }
   }, []);
 
+  const handleLogout = () => {
+    sessionStorage.clear(); // Clear all session storage
+    router.push('/login'); // Redirect to login
+  };
+
   return (
     <nav className="sidebar">
       <h2>EduSync</h2>
       <ul>
         <li>
-          <button onClick={() => onSectionChange("dashboard")}>Dashboard</button>
+          <button onClick={() => onSectionChange('dashboard')}>Dashboard</button>
         </li>
         <li>
-          <button onClick={() => onSectionChange("sharedLinks")}>Shared Links</button>
+          <button onClick={() => onSectionChange('sharedLinks')}>Shared Links</button>
         </li>
-        {role === "Pensyarah" && (
+        {role === 'Pensyarah' && (
           <li>
-            <button onClick={() => onSectionChange("LecturerUploadLinks")}>
-              Upload Resources
-            </button>
+            <button onClick={() => onSectionChange('LecturerUploadLinks')}>Upload Resources</button>
           </li>
         )}
         <li>
-          <button onClick={() => onSectionChange("timetable")}>Timetable</button>
+          <button onClick={() => onSectionChange('timetable')}>Timetable</button>
         </li>
         <li>
-          <button onClick={() => onSectionChange("tasks")}>Tasks Manager</button>
+          <button onClick={() => onSectionChange('tasks')}>Tasks Manager</button>
         </li>
         <li>
-          <button onClick={() => onSectionChange("studentInfo")}>Student Info</button>
+          <button onClick={() => onSectionChange('studentInfo')}>Student Info</button>
         </li>
         <li>
-          <button onClick={() => onSectionChange("settings")}>Settings</button>
+          <button onClick={() => onSectionChange('settings')}>Settings</button>
         </li>
       </ul>
+      <hr />
+      <button className="logout-button" onClick={handleLogout}>Log Out</button>
     </nav>
   );
 };
