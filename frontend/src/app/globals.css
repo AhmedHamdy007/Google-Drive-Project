@@ -35,6 +35,8 @@ body {
 .layout {
   display: flex; /* Sidebar and main content side by side */
   min-height: 100vh; /* Ensure layout fills viewport height */
+  width: 100%; /* Full width for layout */
+  overflow: hidden; /* Prevent unwanted scrolling */
 }
 
 /* Sidebar */
@@ -49,7 +51,7 @@ body {
   padding: 20px;
   overflow-y: auto; /* Allow vertical scrolling for sidebar content */
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  z-index: 1000; /* Ensure it's above the main content */
   scrollbar-width: thin; /* For Firefox */
   scrollbar-color: #357abd #f5f8fa; /* Thumb and track colors */
 }
@@ -98,24 +100,15 @@ body {
   background-color: #357abd;
 }
 
-.sidebar button.active {
-  background-color: #ffffff;
-  color: var(--primary-color);
-  font-weight: bold;
-}
-
-.sidebar button.active:hover {
-  background-color: #e3f2fd;
-}
-
 /* Main Content */
-.main-content {
+.main-contentg {
   margin-left: 250px; /* Offset to account for sidebar */
-  flex-grow: 1;
+  flex-grow: 1; /* Take the remaining space */
   padding: 20px;
   overflow-y: auto; /* Enable scrolling for content overflow */
   background-color: var(--background-color);
-  transition: margin-left 0.3s ease, padding 0.3s ease;
+  height: 100vh;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
 }
 
 /* Responsive Design */

@@ -6,7 +6,6 @@ import Sidebar from "./components/Sidebar";
 import MainContent from "./components/MainContent";
 import "./globals.css"; // Adjust the path based on your file structure
 
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [activeSection, setActiveSection] = useState("dashboard");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -39,12 +38,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body>
           <div className="layout">
             {/* Sidebar (Fixed on the left) */}
-            <div className="sidebar-container">
-              <Sidebar onSectionChange={setActiveSection} />
-            </div>
+            <Sidebar onSectionChange={setActiveSection} />
 
             {/* Main Content (Next to the sidebar) */}
-            <div className="main-content-container">
+            <div className="main-contentg">
               <MainContent activeSection={activeSection} />
             </div>
           </div>
