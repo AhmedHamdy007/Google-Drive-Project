@@ -1,14 +1,14 @@
 /* Main Container */
 .student-info-container {
-  width: 95%; /* Allow more horizontal space */
-  max-width: 1400px; /* Increase the max-width to fill more space */
-  margin: 20px auto; /* Keep it centered */
+  width: calc(100% - 260px); /* Adjust to account for the sidebar width */
+  max-width: 1400px; /* Maintain consistent width */
+  margin: 20px auto;
   background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-x: auto; /* Prevent horizontal overflow */
 }
-
 
 /* Page Title */
 .page-title {
@@ -97,26 +97,27 @@ strong {
 .subjects-table tr:hover {
   background-color: #e8f4ff;
 }
+
 /* Dropdown styling for session and semester */
 select {
   padding: 10px;
   font-size: 1rem;
   border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #f0faff; /* Light blue background */
+  background-color: #f0faff;
   color: #333;
   transition: border-color 0.3s ease;
-  width: 200px; /* Fixed width for the dropdowns */
+  width: 200px;
   margin-bottom: 15px;
 }
 
 select:hover {
-  border-color: #0078d4; /* Sky blue border on hover */
+  border-color: #0078d4;
 }
 
 select:focus {
   border-color: #0078d4;
-  outline: none; /* Remove the default focus outline */
+  outline: none;
 }
 
 /* Labels for the dropdowns */
@@ -136,8 +137,30 @@ select:focus {
 /* Section Title for Filters */
 .filters h2 {
   font-size: 1.5rem;
-  color: #0078d4; /* Sky blue */
+  color: #0078d4;
   border-bottom: 2px solid #0078d4;
   padding-bottom: 5px;
   margin-bottom: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .student-info-container {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .subjects-table th,
+  .subjects-table td {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  select {
+    width: 100%;
+  }
 }

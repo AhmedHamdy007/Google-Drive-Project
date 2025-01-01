@@ -30,9 +30,7 @@ router.post('/', async (req, res) => {
 
 
 // GET /api/resources - Retrieve resources based on session, semester, and course
-// In your routes/resources.js file
 
-// Example of the route in the backend (resources.js)
 router.get('/', async (req, res) => {
   const { no_matrik, session, semester, courses } = req.query;
 

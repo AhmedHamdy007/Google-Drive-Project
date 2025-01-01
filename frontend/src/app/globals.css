@@ -1,43 +1,77 @@
-/* Globals */
-.layout-container {
-  display: flex;
-  height: 100vh;
-  padding: 0; /* Remove padding if present */
-  margin: 0; /* Remove unnecessary margins */
+/* Global CSS Variables */
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #f5f8fa;
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --link-color: #357abd;
+  --error-color: #ff4d4f;
+  --font-family: 'Arial', sans-serif;
+  --border-radius: 8px;
+  --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-
-.sidebar-container {
-  width: 250px; /* Fixed width for the sidebar */
-  background-color: #ffffff;
-  color: white; /* Sidebar text color */
-  display: flex;
-  flex-direction: column; 
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  gap: 20px;
-  border-right: 1px solid #e0e0e0;
+/* Reset Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.content-container {
-  flex: 1; /* Take up the remaining space */
-  padding: 20px; /* Padding for content */
-  background-color: #f5f7fb; /* Background for content */
-  overflow-y: auto; /* Allow vertical scrolling */
+html, body {
+  height: 100%;
+  overflow: auto; /* Allow scrolling for both */
 }
 
+body {
+  font-family: var(--font-family);
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  margin: 0;
+}
 
+/* Layout */
+.layout {
+  display: flex; /* Sidebar and main content side by side */
+  min-height: 100vh; /* Ensure layout fills viewport height */
+  width: 100%; /* Full width for layout */
+  overflow: hidden; /* Prevent unwanted scrolling */
+}
+
+/* Sidebar */
 .sidebar {
-  width: 250px;
-  background-color: var(--primary-color);
+  width: 250px; /* Fixed width for sidebar */
+  height: 100vh; /* Full height of viewport */
+  background-color: var(--primary-color); /* Sidebar background */
   color: white;
-  height: 100vh;
+  position: fixed; /* Keep sidebar fixed on the left */
+  top: 0;
+  left: 0;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
+  overflow-y: auto; /* Allow vertical scrolling for sidebar content */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure it's above the main content */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #357abd #f5f8fa; /* Thumb and track colors */
 }
+
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #357abd;
+  border-radius: var(--border-radius);
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background-color: #f5f8fa;
+}
+
 .sidebar h2 {
-  font-size: 1.5rem;
   margin-bottom: 20px;
+  font-size: 1.5rem;
 }
 
 .sidebar ul {
@@ -50,73 +84,47 @@
 }
 
 .sidebar button {
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  background: transparent;
+  background: none;
   color: white;
   border: none;
   text-align: left;
+  font-size: 1rem;
   cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s ease;
 }
 
 .sidebar button:hover {
   background-color: #357abd;
-  border-radius: 5px;
 }
 
-a {
-  color: inherit; /* Inherit text color from parent element */
-  text-decoration: none; /* Remove underline */
-}
-
-/* Add custom hover effect for links */
-a:hover {
-  text-decoration: underline; /* Optional: Add underline on hover */
-  color: #0070f3; /* Optional: Custom hover color */
-}
-
-/* Add Task Button */
-button {
-  padding: 10px 20px;
-  background-color: #4e8bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #3b74d1;
-}
-
-.daily-tasks {
-  background-color: #ffffff;
+/* Main Content */
+.main-contentg {
+  margin-left: 250px; /* Offset to account for sidebar */
+  flex-grow: 1; /* Take the remaining space */
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Enable scrolling for content overflow */
+  background-color: var(--background-color);
+  height: 100vh;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
 }
 
-.daily-tasks .task {
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  color: white;
-}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
 
-.task.blue {
-  background-color: #4dabf7;
-}
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    box-shadow: none;
+  }
 
-.task.yellow {
-  background-color: #ffc107;
-}
-
-.task.red {
-  background-color: #ff6b6b;
-}
-
-.task.green {
-  background-color: #51cf66;
+  .main-content {
+    margin-left: 0; /* Remove offset for the sidebar */
+  }
 }

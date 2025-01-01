@@ -1,60 +1,119 @@
-/* Dashboard Container */
-.dashboard-container {
+/* =================== Global Styles =================== */
+:root {
+  --primary-color: #4e8bff; /* Sky blue */
+  --secondary-color: #f9f9f9; /* Light gray background */
+  --text-color: #333; /* Default text color */
+  --white: #ffffff;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* =================== Layout Styles =================== */
+.dashboard-layout {
   display: flex;
-  flex-direction: row;
   height: 100vh;
   width: 100%;
 }
 
-/* Main Content Area */
-.main-content {
+.sidebar {
+  width: 250px;
+  background-color: var(--primary-color);
+  color: var(--white);
+  height: 100vh;
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+.dashboard-container {
   flex-grow: 1;
   padding: 20px;
+  overflow-y: auto;
   display: flex;
-  flex-direction: column;
   gap: 20px;
 }
 
-/* Folders in the Dashboard */
-
-/* Daily Tasks Section */
-/* Main Content Layout */
-.main-content-container {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
+/* =================== Sidebar Styles =================== */
+.sidebar h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
 }
 
-/* Links Section */
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 15px;
+}
+
+.sidebar button {
+  width: 100%;
+  text-align: left;
+  background: none;
+  color: var(--white);
+}
+
+.sidebar button:hover {
+  background-color: #357abd;
+}
+
+/* =================== Links Section =================== */
 .links-section {
-  flex: 3; /* Takes more space */
-  background-color: #f5f7fb;
+  flex: 3;
+  background-color: var(--secondary-color);
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }
 
-/* Tasks Section */
+.links-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+/* =================== Tasks Section =================== */
 .tasks-section {
-  flex: 1; /* Smaller section for tasks */
-  background-color: #ffffff;
+  flex: 1;
+  background-color: var(--white);
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }
 
 .tasks-title {
   font-size: 1.5rem;
   margin-bottom: 15px;
-  color: #333;
 }
 
 .task-card {
   margin-bottom: 15px;
   padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  color: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  color: var(--white);
 }
 
 .task-card.low {
@@ -63,6 +122,7 @@
 
 .task-card.medium {
   background-color: #ffc107;
+  color: var(--text-color);
 }
 
 .task-card.high {
@@ -72,4 +132,110 @@
 .no-tasks {
   color: #999;
   font-style: italic;
+}
+
+/* =================== Timetable Section =================== */
+.timetable-section {
+  width: 100%;
+}
+
+.timetable-title {
+  font-size: 2rem;
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+}
+
+.timetable-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+}
+
+.timetable-table th,
+.timetable-table td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.timetable-table th {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+.timetable-table td {
+  background-color: var(--secondary-color);
+}
+
+.timetable-cell {
+  min-height: 70px;
+  vertical-align: top;
+  text-align: left;
+}
+
+.timetable-entry {
+  background-color: var(--white);
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  box-shadow: var(--box-shadow);
+}
+
+.timetable-entry strong {
+  color: var(--primary-color);
+}
+
+.timetable-entry small {
+  color: #555;
+}
+
+/* =================== Buttons for Timetable Entries =================== */
+.timetable-entry button {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  font-size: 0.8rem;
+}
+
+.timetable-entry button.edit-btn {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+.timetable-entry button.delete-btn {
+  background-color: #f44336;
+  color: var(--white);
+}
+
+/* =================== Responsive Design =================== */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
+
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .links-section,
+  .tasks-section {
+    width: 100%;
+  }
+
+  .timetable-table th,
+  .timetable-table td {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
 }

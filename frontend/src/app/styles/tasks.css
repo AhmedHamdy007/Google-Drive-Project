@@ -131,3 +131,34 @@
     background-color: #b02a37;
   }
   
+
+  .daily-tasks {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .daily-tasks .task {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    color: white;
+  }
+  
+  .task.blue {
+    background-color: #4dabf7;
+  }
+  
+  .task.yellow {
+    background-color: #ffc107;
+  }
+  
+  .task.red {
+    background-color: #ff6b6b;
+  }
+  
+  .task.green {
+    background-color: #51cf66;
+  }
+  

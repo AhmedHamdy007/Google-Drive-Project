@@ -1,16 +1,21 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import React from "react";
 
 // Dynamic imports for pages
-const Dashboard = dynamic(() => import("../dashboard/page"));
-const TasksPage = dynamic(() => import("../tasks/page"));
-const TimetablePage = dynamic(() => import("../timetable/page"));
-const SharedResources = dynamic(() => import("../sharedLinks/page"));
-const StudentInfo = dynamic(() => import("../StudentInfo/page"));
-const LecturerUploadLinks = dynamic(() => import("../LecturerUploadLinks/page"));
+const Dashboard = dynamic(() => import("../dashboard/page"), { ssr: false });
+const TasksPage = dynamic(() => import("../tasks/page"), { ssr: false });
+const TimetablePage = dynamic(() => import("../timetable/page"), { ssr: false });
+const SharedResources = dynamic(() => import("../sharedLinks/page"), { ssr: false });
+const StudentInfo = dynamic(() => import("../StudentInfo/page"), { ssr: false });
+const LecturerUploadLinks = dynamic(() => import("../LecturerUploadLinks/page"), { ssr: false });
 
-const MainContent: React.FC<{ activeSection: string }> = ({ activeSection }) => {
+interface MainContentProps {
+  activeSection: string;
+}
+
+const MainContent: React.FC<MainContentProps> = ({ activeSection }) => {
   const renderContent = () => {
     switch (activeSection) {
       case "dashboard":
