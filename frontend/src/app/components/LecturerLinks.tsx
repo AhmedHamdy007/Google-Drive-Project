@@ -1,6 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { fetchUserResources, deleteResource, editResource } from "../lib/api/apiResources";
+import {
+  fetchUserResources,
+  deleteResource,
+  editResource,
+} from "../lib/api/apiResources";
 import "../styles/lecturerLinks.css";
 
 interface LinkData {
@@ -123,12 +127,14 @@ const LecturerLinks: React.FC = () => {
                   onChange={handleChange}
                   placeholder="URL"
                 />
-                <button onClick={handleSave} className="save-btn">
-                  Save
-                </button>
-                <button onClick={handleCancel} className="cancel-btn">
-                  Cancel
-                </button>
+                <div className="edit-form-buttons">
+                  <button onClick={handleSave} className="save-btn">
+                    Save
+                  </button>
+                  <button onClick={handleCancel} className="cancel-btn">
+                    Cancel
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="link-details">
@@ -143,7 +149,10 @@ const LecturerLinks: React.FC = () => {
                   <button onClick={() => handleEdit(link)} className="edit-btn">
                     Edit
                   </button>
-                  <button onClick={() => handleDelete(link._id)} className="delete-btn">
+                  <button
+                    onClick={() => handleDelete(link._id)}
+                    className="delete-btn"
+                  >
                     Delete
                   </button>
                 </div>
