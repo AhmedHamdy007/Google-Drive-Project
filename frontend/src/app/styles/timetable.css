@@ -42,8 +42,9 @@ button {
 button.edit-btn {
   background-color: #4e8bff; /* Sky blue */
   color: white;
-  border-radius: 12px; /* Rounded corners */
-  padding: 8px 15px;
+  border-radius: 5px;
+  padding: 6px 12px;
+  margin-right: 10px; /* Space between buttons */
 }
 
 button.edit-btn:hover {
@@ -55,8 +56,8 @@ button.edit-btn:hover {
 button.delete-btn {
   background-color: #f44336; /* Red */
   color: white;
-  border-radius: 12px; /* Rounded corners */
-  padding: 8px 15px;
+  border-radius: 5px;
+  padding: 6px 12px;
 }
 
 button.delete-btn:hover {
@@ -120,31 +121,70 @@ button.add-btn:hover {
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: column; /* Stack content and buttons vertically */
+  gap: 5px; /* Space between elements inside the entry */
 }
 
 /* Buttons in the timetable entries */
+/* Buttons in the timetable entries */
+.timetable-entry {
+  position: relative;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.timetable-entry strong {
+  color: #4e8bff;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.timetable-entry small {
+  color: #555;
+}
+
+.timetable-entry .buttons-container {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+}
+
 .timetable-entry button {
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
-  font-size: 0.8rem;
+  font-size: 0.8rem; /* Smaller font size */
+  padding: 5px 10px; /* Adjust padding */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.timetable-entry button + button {
-  left: 80px; /* Adjust for the second button */
+/* Edit button */
+.timetable-entry button.edit-btn {
+  background-color: #4e8bff; /* Sky blue */
+  color: white;
 }
 
-/* Optional: Add an icon to buttons (optional but recommended for better UX) */
-button.edit-btn::before {
-  content: "✏️"; /* Pencil icon for edit */
-  margin-right: 5px;
+.timetable-entry button.edit-btn:hover {
+  background-color: #3b74d1;
+  transform: scale(1.05); /* Slight zoom effect on hover */
 }
 
-button.delete-btn::before {
-  content: "🗑️"; /* Trash icon for delete */
-  margin-right: 5px;
+/* Delete button */
+.timetable-entry button.delete-btn {
+  background-color: #f44336; /* Red */
+  color: white;
 }
 
+.timetable-entry button.delete-btn:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
+}
 /* Form and Input Styling */
 .timetable-form h2 {
   font-size: 1.5rem;
@@ -186,42 +226,8 @@ button.delete-btn::before {
   overflow-x: auto;
 }
 
-.timetable-table th,
-.timetable-table td {
-  padding: 15px;
-  border: 1px solid #e0e0e0;
-  font-size: 1rem;
-}
-
-.timetable-table th {
-  background-color: #4e8bff;
-  color: white;
-  text-transform: uppercase;
-  font-size: 1rem;
-}
-
-.timetable-table td {
-  background-color: #f9f9f9;
-  color: #333;
-}
-
-.timetable-cell {
-  min-height: 50px;
-  vertical-align: top;
-  text-align: left;
-  padding: 10px;
-}
 
 /* Timetable Entry */
-.timetable-entry {
-  background-color: #e7f3ff;
-  padding: 10px;
-  margin-bottom: 5px;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
 .timetable-entry strong {
   color: #4e8bff;
 }
