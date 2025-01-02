@@ -55,7 +55,7 @@ router.get('/', async (req, res) => {
 
     // Check if no resources are found and return a message with a 200 status code
     if (resources.length === 0) {
-      return res.status(200).json({ message: 'No resources found for this session, semester, and course' });
+      return res.status(200).json();
     }
 
     res.status(200).json(resources); // Return the filtered resources

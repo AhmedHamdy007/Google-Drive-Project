@@ -88,8 +88,7 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
             required
           >
             <option value="">Select Category</option>
-            <option value="Course Files">Course Files</option>
-            <option value="Course Coordination">Course Coordination</option>
+            
             <option value="Research">Research</option>
             <option value="Internship">Internship</option>
             <option value="PSM 1">PSM 1</option>

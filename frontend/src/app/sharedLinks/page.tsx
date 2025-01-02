@@ -39,7 +39,7 @@ export default function SharedResources() {
   const [session, setSession] = useState("2024/2025"); // Default session
   const [semester, setSemester] = useState("1"); // Default semester
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null); // Selected subject
-  const [loading, setLoading] = useState<boolean>(false);  // Loading state for resources
+  const [loading, setLoading] = useState<boolean>(false); // Loading state for resources
 
   // Fetch user data and enrolled subjects when the component mounts
   useEffect(() => {
@@ -55,10 +55,18 @@ export default function SharedResources() {
   }, [session, semester]); // Trigger re-fetch when session or semester changes
 
   // Fetch subjects data based on matric number, session, and semester
-  const fetchSubjects = async (noMatrik: string, sesi: string, semester: string) => {
+  const fetchSubjects = async (
+    noMatrik: string,
+    sesi: string,
+    semester: string
+  ) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/user-subjects?no_matrik=${encodeURIComponent(noMatrik)}&sesi=${encodeURIComponent(sesi)}&semester=${encodeURIComponent(semester)}`
+        `http://localhost:5000/user-subjects?no_matrik=${encodeURIComponent(
+          noMatrik
+        )}&sesi=${encodeURIComponent(sesi)}&semester=${encodeURIComponent(
+          semester
+        )}`
       );
 
       if (response.ok) {
@@ -78,17 +86,21 @@ export default function SharedResources() {
     setSelectedSubject(subjectId);
     setLoading(true); // Set loading to true while fetching resources
     setError(""); // Clear previous errors
-  
+
     try {
       const userData = JSON.parse(sessionStorage.getItem("userData")!);
       const matricNo = userData?.login_name;
-  
-      const requestUrl = `http://localhost:5000/api/resources?no_matrik=${encodeURIComponent(matricNo)}&session=${encodeURIComponent(session)}&semester=${encodeURIComponent(semester)}&courses=${encodeURIComponent(subjectId)}`;
-      console.log("Request URL:", requestUrl);  // Log the constructed URL for debugging
-  
+
+      const requestUrl = `http://localhost:5000/api/resources?no_matrik=${encodeURIComponent(
+        matricNo
+      )}&session=${encodeURIComponent(session)}&semester=${encodeURIComponent(
+        semester
+      )}&courses=${encodeURIComponent(subjectId)}`;
+      console.log("Request URL:", requestUrl); // Log the constructed URL for debugging
+
       // Fetch resources using Axios
       const response = await axios.get(requestUrl);
-  
+
       if (response.data.message) {
         setError(response.data.message); // Show the message if no resources are found
         setResources([]); // Clear any previous resources
@@ -102,8 +114,6 @@ export default function SharedResources() {
       setLoading(false); // Stop loading when resources are fetched or error occurs
     }
   };
-  
-  
 
   // Handle session change
   const handleSessionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -195,29 +205,33 @@ export default function SharedResources() {
         )}
       </section>
 
-      {/* Resources for the selected subject */}
-      {selectedSubject && (
-        <section className="resources-info">
-          <h2 className="section-title">Resources for {selectedSubject}</h2>
-          {loading ? (
-            <p>Loading resources...</p>
-          ) : resources.length > 0 ? (
-            <ul>
-              {resources.map((resource, index) => (
-                <li key={index}>
-                  <strong>{resource.title}</strong>
-                  <p>{resource.category}</p>
-                  <a href={resource.url} target="_blank" rel="noopener noreferrer">
-                    View Resource
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No resources found for this subject.</p>
-          )}
-        </section>
+{/* Resources for the selected subject */}
+{selectedSubject && (
+  <section className="resources-info">
+    <h2 className="section-title">Resources for {selectedSubject}</h2>
+    <ul>
+      {resources.length > 0 ? (
+        resources.map((resource, index) => (
+          <li key={index} className="resource-item">
+            <strong>{resource.title}</strong>
+            <p>{resource.category}</p>
+            <a href={resource.url} target="_blank" rel="noopener noreferrer">
+              View Resource
+            </a>
+          </li>
+        ))
+      ) : (
+        <li className="resource-item">
+          <strong>No resources found</strong>
+          <p>Please check back later or contact your lecturer.</p>
+        </li>
       )}
+    </ul>
+  </section>
+)}
+
+
+
     </div>
   );
 }

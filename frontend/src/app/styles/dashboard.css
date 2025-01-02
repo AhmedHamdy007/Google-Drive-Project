@@ -81,6 +81,47 @@ button:hover {
 }
 
 /* =================== Links Section =================== */
+/* Shared Links Section */
+.shared-links-list {
+  list-style: none;
+  padding: 0;
+}
+
+.shared-link-item {
+  background-color: var(--secondary-color);
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.shared-link-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.shared-link-item strong {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+
+.shared-link-item p {
+  margin: 5px 0;
+  color: var(--text-color);
+}
+
+.shared-link-item a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.shared-link-item a:hover {
+  color: var(--primary-color);
+}
+
 .links-section {
   flex: 3;
   background-color: var(--secondary-color);

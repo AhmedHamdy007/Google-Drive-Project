@@ -53,7 +53,7 @@ const Sidebar: React.FC<{ onSectionChange: (section: string) => void }> = ({ onS
           <button onClick={() => onSectionChange('tasks')}>Tasks Manager</button>
         </li>
         <li>
-          <button onClick={() => onSectionChange('studentInfo')}>Student Info</button>
+          <button onClick={() => onSectionChange('studentInfo')}>User's Info</button>
         </li>
         
       </ul>
