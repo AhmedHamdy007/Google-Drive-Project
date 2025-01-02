@@ -177,13 +177,15 @@ export default function TimetablePage() {
                 {daysOfWeek.map((day) => (
                   <td key={`${slot}-${day}`} className="timetable-cell">
                     {timetable
-                      .filter((entry) => entry.time === slot && entry.day === day)
+                      .filter(
+                        (entry) => entry.time === slot && entry.day === day
+                      )
                       .map((entry) => (
                         <div key={entry._id} className="timetable-entry">
                           <strong>{entry.subject}</strong>
                           <br />
                           <small>{entry.location}</small>
-                          <div>
+                          <div className="buttons-container">
                             <button
                               className="edit-btn"
                               onClick={() => setEditingEntry(entry)}
