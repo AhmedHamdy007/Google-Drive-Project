@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import LinkContainer from "../components/LinkContainer";
 import { fetchTasks } from "../lib/api/tasks";
-import '../styles/dashboard.css'; // Simplified CSS for dashboard
+import "../styles/dashboard.css"; // Simplified CSS for dashboard
 
 const timeSlots = [
   "8:00-10:00",
@@ -16,31 +16,41 @@ const timeSlots = [
 const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 const DashboardPage: React.FC = () => {
-  const [links, setLinks] = useState<any[]>([]);
+  const [sharedLinks, setSharedLinks] = useState<any[]>([]);
   const [tasks, setTasks] = useState<any[]>([]);
   const [timetable, setTimetable] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  // Fetch links, tasks, and timetable as before
+  // Fetch shared links, tasks, and timetable
   useEffect(() => {
-    const fetchLinks = async () => {
+    const fetchSharedLinks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/resources");
+        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        const email = userData?.email;
+
+        if (!email) {
+          setError("User email not found. Please log in again.");
+          return;
+        }
+
+        const response = await fetch(`http://localhost:5000/api/sharedLinks/inbox?email=${email}`);
+        const data = await response.json();
+
         if (response.ok) {
-          const data = await response.json();
-          setLinks(data.slice(-4).reverse());
+          setSharedLinks(data.slice(0, 4)); // Fetch latest 4 shared links
         } else {
-          console.error("Failed to fetch resources.");
+          setError(data.message || "Failed to fetch shared links.");
         }
       } catch (err) {
-        console.error("Error fetching resources:", err);
+        console.error("Error fetching shared links:", err);
+        setError("An error occurred while fetching shared links.");
       }
     };
 
     const fetchDailyTasks = async () => {
       try {
-        const userData = JSON.parse(sessionStorage.getItem("userData")!);
+        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
         const matricNo = userData?.login_name;
         const tasks = await fetchTasks(matricNo);
         setTasks(tasks);
@@ -51,7 +61,7 @@ const DashboardPage: React.FC = () => {
 
     const fetchTimetableData = async () => {
       try {
-        const userData = JSON.parse(sessionStorage.getItem("userData")!);
+        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
         const matricNo = userData?.login_name;
         setLoading(true);
         const response = await fetch(`http://localhost:5000/api/timetable/${matricNo}`);
@@ -68,7 +78,7 @@ const DashboardPage: React.FC = () => {
       }
     };
 
-    fetchLinks();
+    fetchSharedLinks();
     fetchDailyTasks();
     fetchTimetableData();
   }, []);
@@ -78,7 +88,23 @@ const DashboardPage: React.FC = () => {
       {/* Shared Links */}
       <div className="links-section">
         <h2>Latest Shared Links</h2>
-        <LinkContainer links={links} />
+        {sharedLinks.length > 0 ? (
+          <ul className="shared-links-list">
+            {sharedLinks.map((link) => (
+              <li key={link._id} className="shared-link-item">
+                <strong>{link.subject}</strong>
+                <p>{link.message}</p>
+                < a href={link.resource_url} target="_blank" rel="noopener noreferrer">
+                  View Link
+                </a>
+                <p>Shared by: {link.shared_by}</p>
+                <p>Date: {new Date(link.createdAt).toLocaleString()}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No shared links available!</p>
+        )}
       </div>
 
       {/* Tasks */}
