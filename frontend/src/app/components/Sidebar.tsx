@@ -27,6 +27,10 @@ const Sidebar: React.FC<{ onSectionChange: (section: string) => void }> = ({ onS
           <button onClick={() => onSectionChange('dashboard')}>Dashboard</button>
         </li>
         <li>
+          <button onClick={() => onSectionChange('Inbox')}>Inbox</button>
+        </li>
+
+        <li>
           <button onClick={() => onSectionChange('sharedLinks')}>Shared Links</button>
         </li>
         {role === 'Pensyarah' && (
@@ -40,6 +44,9 @@ const Sidebar: React.FC<{ onSectionChange: (section: string) => void }> = ({ onS
         </li>
         )}
         <li>
+          <button onClick={() => onSectionChange('ShareLinks')}>Share Links</button>
+        </li>
+         <li>
           <button onClick={() => onSectionChange('timetable')}>Timetable</button>
         </li>
         <li>
@@ -48,9 +55,7 @@ const Sidebar: React.FC<{ onSectionChange: (section: string) => void }> = ({ onS
         <li>
           <button onClick={() => onSectionChange('studentInfo')}>Student Info</button>
         </li>
-        <li>
-          <button onClick={() => onSectionChange('settings')}>Settings</button>
-        </li>
+        
       </ul>
       <hr />
       <button className="logout-button" onClick={handleLogout}>Log Out</button>

@@ -11,6 +11,8 @@ const SharedResources = dynamic(() => import("../sharedLinks/page"), { ssr: fals
 const StudentInfo = dynamic(() => import("../StudentInfo/page"), { ssr: false });
 const LecturerUploadLinks = dynamic(() => import("../LecturerUploadLinks/page"), { ssr: false });
 const LecturerLinks = dynamic(() => import("../components/LecturerLinks"), { ssr: false }); // Add LecturerLinks
+const ShareLinks = dynamic(() => import("../components/ShareLinks"), { ssr: false }); // Add LecturerLinks
+const Inbox = dynamic(() => import("./Inbox"), { ssr: false }); // Add LecturerLinks
 
 interface MainContentProps {
   activeSection: string;
@@ -34,6 +36,10 @@ const MainContent: React.FC<MainContentProps> = ({ activeSection, onSectionChang
         return <LecturerUploadLinks onSectionChange={onSectionChange} />; // Pass the prop
       case "lecturerLinks":
         return <LecturerLinks />;
+        case "ShareLinks":
+          return <ShareLinks />;
+          case "Inbox":
+        return <Inbox />;
       default:
         return <Dashboard />;
     }

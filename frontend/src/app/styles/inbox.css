@@ -1,0 +1,113 @@
+/* Container for the Inbox page */
+.inbox-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    font-family: var(--font-family);
+  }
+  
+  /* Page title */
+  .inbox-container h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Inbox list styling */
+  .inbox-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  /* Individual inbox items */
+  .inbox-item {
+    background-color: var(--secondary-color);
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .inbox-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Subject and message styling */
+  .inbox-item h3 {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
+  }
+  
+  .inbox-item p {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+  
+  /* Link styling */
+  .inbox-item a {
+    display: inline-block;
+    font-size: 1rem;
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .inbox-item a:hover {
+    color: var(--primary-color);
+  }
+  
+  /* Date and shared by details */
+  .inbox-item p:last-of-type {
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: 5px;
+  }
+  
+  /* Loading and error messages */
+  .error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .inbox-container {
+      padding: 15px;
+    }
+  
+    .inbox-item {
+      padding: 10px;
+    }
+  
+    .inbox-item h3 {
+      font-size: 1rem;
+    }
+  
+    .inbox-item p {
+      font-size: 0.9rem;
+    }
+  
+    .inbox-item a {
+      font-size: 0.9rem;
+    }
+  }
+  
