@@ -13,7 +13,9 @@ interface LinkData {
   url: string;
 }
 
-const LecturerUploadLinks: React.FC = () => {
+const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void }> = ({
+  onSectionChange,
+}) => {
   const [linkData, setLinkData] = useState<LinkData>({
     category: "",
     referenceName: "",
@@ -41,34 +43,29 @@ const LecturerUploadLinks: React.FC = () => {
   // Handle the form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     try {
-      // Use the uploadResource utility function to upload the resource
-      const result = await uploadResource(linkData);
-
-      setMessage("Resource uploaded successfully!"); // Success message
+      const response = await uploadResource(linkData); // Automatically includes `uploaded_by` and `no_matrik`
+      console.log("Upload Response:", response);
+  
+      setMessage(response.message || "Resource uploaded successfully!");
       setMessageType("success");
-      setLinkData({
-        category: "",
-        referenceName: "",
-        session: "2024/2025",
-        semester: "1",
-        course: "",
-        description: "",
-        url: "",
-      }); // Reset the form
-    } catch (err) {
-      setMessage("An error occurred. Please try again."); // Error message
+  
+      onSectionChange("lecturerLinks"); // Redirect to LecturerLinks
+    } catch (error) {
+      console.error("Error occurred:", (error as Error).message || error);
+  
+      setMessage((error as Error).message || "An error occurred. Please try again.");
       setMessageType("error");
     }
-
+  
     // Clear the message after a few seconds
     setTimeout(() => {
       setMessage(null);
       setMessageType(null);
     }, 5000);
   };
-
+  
   return (
     <div className="upload-links-container">
       <h1>Lecturer: Upload Course Links</h1>

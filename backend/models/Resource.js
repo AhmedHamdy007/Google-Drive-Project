@@ -26,7 +26,7 @@ const ResourceSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: function (v) {
-                return /^https?:\/\/.+$/.test(v); // Validates URL format
+                return /^https?:\/\/.+$/.test(v);
             },
             message: props => `${props.value} is not a valid URL!`,
         },
@@ -35,10 +35,14 @@ const ResourceSchema = new mongoose.Schema({
         type: String, // Stores the lecturer's name or ID
         required: true,
     },
-    course: {
-        type: String, // Single course code that this resource is associated with
+    no_matrik: { 
+        type: String, // Add matric number for precise filtering
         required: true,
     },
-}, { timestamps: true }); // Automatically adds createdAt and updatedAt fields
+    course: {
+        type: String,
+        required: true,
+    },
+}, { timestamps: true });
 
 module.exports = mongoose.model('Resource', ResourceSchema);
