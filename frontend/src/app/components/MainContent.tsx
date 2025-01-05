@@ -5,11 +5,11 @@ import React from "react";
 
 // Dynamic imports for pages
 const Dashboard = dynamic(() => import("../dashboard/page"), { ssr: false });
-const TasksPage = dynamic(() => import("../tasks/page"), { ssr: false });
-const TimetablePage = dynamic(() => import("../timetable/page"), { ssr: false });
-const SharedResources = dynamic(() => import("../sharedLinks/page"), { ssr: false });
-const StudentInfo = dynamic(() => import("../StudentInfo/page"), { ssr: false });
-const LecturerUploadLinks = dynamic(() => import("../LecturerUploadLinks/page"), { ssr: false });
+const TasksPage = dynamic(() => import("./tasks"), { ssr: false });
+const TimetablePage = dynamic(() => import("./timetable"), { ssr: false });
+const SharedResources = dynamic(() => import("./sharedLinks"), { ssr: false });
+const StudentInfo = dynamic(() => import("./StudentInfo"), { ssr: false });
+const LecturerUploadLinks = dynamic(() => import("./LecturerUploadLinks"), { ssr: false });
 const LecturerLinks = dynamic(() => import("../components/LecturerLinks"), { ssr: false }); // Add LecturerLinks
 const ShareLinks = dynamic(() => import("../components/ShareLinks"), { ssr: false }); // Add LecturerLinks
 const Inbox = dynamic(() => import("./Inbox"), { ssr: false }); // Add LecturerLinks
