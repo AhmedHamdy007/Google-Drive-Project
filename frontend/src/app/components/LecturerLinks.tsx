@@ -4,98 +4,94 @@ import {
   fetchUserResources,
   deleteResource,
   editResource,
+  deleteSharedLink ,
 } from "../lib/api/apiResources";
+
+import axios from "axios";
 import "../styles/lecturerLinks.css";
 
+// Define the data structure for links
 interface LinkData {
-  _id: string; // Use MongoDB's unique identifier
-  category: string;
-  referenceName: string;
-  session: string;
-  semester: string;
-  course: string;
-  description: string;
+  _id: string;
+  category?: string;
+  referenceName?: string;
+  session?: string;
+  semester?: string;
+  course?: string;
+  description?: string;
   url: string;
+  shared_with?: string;
+  subject?: string;
+  message?: string;
 }
 
 const LecturerLinks: React.FC = () => {
-  const [links, setLinks] = useState<LinkData[]>([]);
+  const [uploadedLinks, setUploadedLinks] = useState<LinkData[]>([]);
+  const [sharedLinks, setSharedLinks] = useState<LinkData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [editMode, setEditMode] = useState<string | null>(null); // To track the link being edited
-  const [updatedLink, setUpdatedLink] = useState<LinkData | null>(null); // Temporary storage for editing
 
+  // Fetch both uploaded and shared links
   useEffect(() => {
-    const fetchUserLinks = async () => {
+    const fetchLinks = async () => {
       try {
         const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        const email = userData?.email;
         const noMatrik = userData?.login_name;
 
-        if (!noMatrik) {
+        if (!email || !noMatrik) {
           setError("Unable to identify the current user. Please log in again.");
           setLoading(false);
           return;
         }
 
-        const data = await fetchUserResources(noMatrik);
-        setLinks(data);
+        // Fetch uploaded links
+        const uploadedData = await fetchUserResources(noMatrik);
+        setUploadedLinks(uploadedData);
+
+        // Fetch shared links
+        const sharedResponse = await axios.get(
+          "http://localhost:5000/api/sharedLinks/shared-by-user",
+          { params: { email } }
+        );
+        setSharedLinks(sharedResponse.data);
+
         setLoading(false);
       } catch (err) {
-        console.error("Error fetching resources:", err);
-        setError("Failed to fetch resources. Please try again later.");
+        console.error("Error fetching links:", err);
+        setError("Failed to fetch links. Please try again later.");
         setLoading(false);
       }
     };
 
-    fetchUserLinks();
+    fetchLinks();
   }, []);
 
-  const handleDelete = async (_id: string) => {
+  const handleDelete = async (_id: string, type: "uploaded" | "shared") => {
     try {
-      await deleteResource(_id);
-      setLinks((prevLinks) => prevLinks.filter((link) => link._id !== _id));
+      if (type === "uploaded") {
+        await deleteResource(_id);
+        setUploadedLinks((prevLinks) =>
+          prevLinks.filter((link) => link._id !== _id)
+        );
+      } else {
+        // Handle shared link deletion (implement backend route if needed)
+        console.warn("Shared link deletion not implemented yet.");
+      }
     } catch (error) {
-      console.error("Error deleting resource:", error);
-      setError("Failed to delete resource.");
+      console.error("Error deleting link:", error);
+      setError("Failed to delete link.");
     }
   };
-
-  const handleEdit = (link: LinkData) => {
-    setEditMode(link._id); // Enable edit mode for the selected link
-    setUpdatedLink({ ...link });
-  };
-
-  const handleSave = async () => {
-    if (!updatedLink) return;
-
+  const handleDeleteSharedLink = async (_id: string) => {
     try {
-      await editResource(updatedLink._id, updatedLink);
-      setLinks((prevLinks) =>
-        prevLinks.map((link) =>
-          link._id === updatedLink._id ? { ...updatedLink } : link
-        )
-      );
-      setEditMode(null); // Exit edit mode
-      setUpdatedLink(null);
+      await deleteSharedLink(_id);
+      setSharedLinks((prevLinks) => prevLinks.filter((link) => link._id !== _id));
     } catch (error) {
-      console.error("Error saving resource:", error);
-      setError("Failed to update resource.");
+      console.error("Error deleting shared link:", error);
+      setError("Failed to delete shared link.");
     }
   };
-
-  const handleCancel = () => {
-    setEditMode(null); // Exit edit mode without saving
-    setUpdatedLink(null);
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    if (!updatedLink) return;
-    const { name, value } = e.target;
-    setUpdatedLink((prev) => ({ ...prev, [name]: value } as LinkData));
-  };
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
 
@@ -103,61 +99,47 @@ const LecturerLinks: React.FC = () => {
     <div className="lecturer-links-container">
       <h1>Your Uploaded Links</h1>
       <ul className="links-list">
-        {links.map((link) => (
+        {uploadedLinks.map((link) => (
           <li key={link._id} className="link-item">
-            {editMode === link._id ? (
-              <div className="edit-form">
-                <input
-                  type="text"
-                  name="referenceName"
-                  value={updatedLink?.referenceName || ""}
-                  onChange={handleChange}
-                  placeholder="Reference Name"
-                />
-                <textarea
-                  name="description"
-                  value={updatedLink?.description || ""}
-                  onChange={handleChange}
-                  placeholder="Description"
-                />
-                <input
-                  type="url"
-                  name="url"
-                  value={updatedLink?.url || ""}
-                  onChange={handleChange}
-                  placeholder="URL"
-                />
-                <div className="edit-form-buttons">
-                  <button onClick={handleSave} className="save-btn">
-                    Save
-                  </button>
-                  <button onClick={handleCancel} className="cancel-btn">
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="link-details">
-                <p>
-                  <strong>{link.referenceName}</strong> - {link.category}
-                </p>
-                <p>{link.description}</p>
-                <a href={link.url} target="_blank" rel="noopener noreferrer">
-                  View Link
-                </a>
-                <div className="actions">
-                  <button onClick={() => handleEdit(link)} className="edit-btn">
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(link._id)}
-                    className="delete-btn"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            )}
+            <p>
+              <strong>{link.referenceName}</strong> - {link.category}
+            </p>
+            <p>{link.description}</p>
+            <a href={link.url} target="_blank" rel="noopener noreferrer">
+              View Link
+            </a>
+            <div className="actions">
+              <button
+                onClick={() => handleDelete(link._id, "uploaded")}
+                className="delete-btn"
+              >
+                Delete
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <h1>Your Shared Links</h1>
+      <ul className="links-list">
+        {sharedLinks.map((link) => (
+          <li key={link._id} className="link-item">
+            <p>
+              <strong>{link.subject}</strong> - {link.shared_with}
+            </p>
+            <p>{link.message}</p>
+            <a href={link.url} target="_blank" rel="noopener noreferrer">
+              View Shared Link
+            </a>
+            <div className="actions">
+            <button
+  onClick={() => handleDeleteSharedLink(link._id)}
+  className="delete-btn"
+>
+  Delete
+</button>
+
+            </div>
           </li>
         ))}
       </ul>

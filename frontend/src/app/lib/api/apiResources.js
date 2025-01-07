@@ -101,3 +101,14 @@ export const fetchResourceById = async (id) => {
     throw new Error("Failed to fetch resource");
   }
 };
+
+// Function to delete a shared link by its ID
+export const deleteSharedLink = async (id) => {
+  try {
+    const response = await axios.delete(`http://localhost:5000/api/sharedLinks/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting shared link:", error);
+    throw new Error("Failed to delete shared link.");
+  }
+};
