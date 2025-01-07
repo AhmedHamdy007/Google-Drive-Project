@@ -4,7 +4,7 @@ import "../styles/shareLinks.css"; // Link to the styles
 
 const ShareLinks: React.FC = () => {
   const [formData, setFormData] = useState({
-    recipientEmail: "",
+    recipientEmails: "", // Changed to handle multiple emails
     subject: "",
     message: "",
     resourceUrl: "",
@@ -21,19 +21,35 @@ const ShareLinks: React.FC = () => {
     }));
   };
 
+  // Validate email addresses
+  const validateEmails = (emails: string[]) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emails.every((email) => emailRegex.test(email.trim()));
+  };
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     try {
       const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
       const sharedBy = userData?.email;
-  
+
       if (!sharedBy) {
         setErrorMessage("User email not found. Please log in again.");
         return;
       }
-  
+
+      // Split recipientEmails into an array
+      const emailsArray = formData.recipientEmails.split(",").map((email) => email.trim());
+
+      // Validate the emails
+      if (!validateEmails(emailsArray)) {
+        setErrorMessage("One or more email addresses are invalid.");
+        return;
+      }
+
+      // Send the POST request to the backend
       const response = await fetch("http://localhost:5000/api/sharedLinks/share", {
         method: "POST",
         headers: {
@@ -41,16 +57,16 @@ const ShareLinks: React.FC = () => {
         },
         body: JSON.stringify({
           shared_by: sharedBy, // Sender's email
-          shared_with: formData.recipientEmail, // Receiver's email (renamed)
+          shared_with: emailsArray, // Array of recipient emails
           subject: formData.subject,
           message: formData.message,
-          resource_url: formData.resourceUrl, // Renamed to match backend expectations
+          resource_url: formData.resourceUrl,
         }),
       });
-  
+
       if (response.ok) {
         setSuccessMessage("Resource shared successfully!");
-        setFormData({ recipientEmail: "", subject: "", message: "", resourceUrl: "" });
+        setFormData({ recipientEmails: "", subject: "", message: "", resourceUrl: "" });
       } else {
         const errorData = await response.json();
         setErrorMessage(errorData.message || "Failed to share the resource.");
@@ -60,7 +76,6 @@ const ShareLinks: React.FC = () => {
       setErrorMessage("An error occurred. Please try again.");
     }
   };
-  
 
   return (
     <div className="share-links-container">
@@ -71,14 +86,14 @@ const ShareLinks: React.FC = () => {
 
       <form onSubmit={handleSubmit} className="share-links-form">
         <div className="form-group">
-          <label htmlFor="recipientEmail">Recipient Email</label>
+          <label htmlFor="recipientEmails">Recipient Emails (comma-separated)</label>
           <input
-            type="email"
-            id="recipientEmail"
-            name="recipientEmail"
-            value={formData.recipientEmail}
+            type="text"
+            id="recipientEmails"
+            name="recipientEmails"
+            value={formData.recipientEmails}
             onChange={handleChange}
-            placeholder="Enter recipient's email"
+            placeholder="Enter recipient emails separated by commas"
             required
           />
         </div>

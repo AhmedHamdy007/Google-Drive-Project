@@ -2,10 +2,8 @@ const express = require('express');
 const SharedLink = require('../models/SharedLinks'); // Import the SharedLinks model
 const router = express.Router();
 
-// POST /api/share - Save a new shared link
+// POST /api/sharedLinks/share
 router.post('/share', async (req, res) => {
-  console.log("Received body:", req.body);
-
   const { shared_by, shared_with, subject, message, resource_url } = req.body;
 
   if (!shared_by || !shared_with || !subject || !message || !resource_url) {
@@ -13,21 +11,25 @@ router.post('/share', async (req, res) => {
   }
 
   try {
-    const newLink = new SharedLink({
+    // Create a shared link for each recipient
+    const links = shared_with.map((email) => ({
       shared_by,
-      shared_with,
+      shared_with: email,
       subject,
       message,
       resource_url,
-    });
+    }));
 
-    const savedLink = await newLink.save();
-    res.status(201).json({ message: 'Link shared successfully.', link: savedLink });
+    // Save all links to the database
+    await SharedLink.insertMany(links);
+
+    res.status(201).json({ message: 'Links shared successfully.' });
   } catch (error) {
-    console.error('Error sharing link:', error.message);
-    res.status(500).json({ message: 'Failed to share link.' });
+    console.error('Error sharing links:', error);
+    res.status(500).json({ message: 'Failed to share links.' });
   }
 });
+
 
 router.get('/inbox', async (req, res) => {
   const { email } = req.query; // Receiver's email from query params
