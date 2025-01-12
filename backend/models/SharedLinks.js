@@ -10,16 +10,24 @@ const SharedLinkSchema = new mongoose.Schema(
       type: String, // Receiver's email
       required: true,
     },
-    subject: {
-      type: String,
+    category: {
+      type: String, // Category of the shared resource
       required: true,
     },
-    message: {
-      type: String,
+    session: {
+      type: String, // Academic session
+      required: true,
+    },
+    subject: {
+      type: String, // Reference name or subject
+      required: true,
+    },
+    description: {
+      type: String, // Description of the resource
       required: true,
     },
     resource_url: {
-      type: String,
+      type: String, // Resource URL
       required: true,
     },
   },

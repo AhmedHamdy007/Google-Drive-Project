@@ -5,7 +5,9 @@ require("dotenv").config();
 const taskRoutes = require("./routes/tasks");
 const timetableRoutes = require("./routes/timetable");
 const resourceRoutes = require("./routes/resources"); // Import your resources routes file
-const sharedLinksRoutes = require("./routes/sharedLinks"); // Import the sharedLinks routes
+const sharedLinksRoutes = require("./routes/sharedLinks"); // SharedLinks routes
+const userRoutes = require("./routes/userRoutes");
+const categorySessionRoutes = require('./routes/categorySession');
 
 const app = express();
 const port = 5000;
@@ -30,7 +32,9 @@ app.get("/", (req, res) => {
 app.use("/users", require("./routes/users"));
 app.use("/api/tasks", taskRoutes);
 app.use("/api/timetable", timetableRoutes);
-app.use("/api/sharedLinks", sharedLinksRoutes); // Add the shared links routes
+app.use("/api/shared-links", sharedLinksRoutes);
+app.use("/api", userRoutes);
+app.use('/api/categories-sessions', categorySessionRoutes);
 
 // Start server
 app.listen(port, () => {

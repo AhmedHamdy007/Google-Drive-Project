@@ -1,147 +1,218 @@
 "use client";
-import React, { useState } from "react";
-import "../styles/shareLinks.css"; // Link to the styles
+import React, { useEffect, useState } from "react";
+import "../styles/lecturerUploadLinks.css";
 
-const ShareLinks: React.FC = () => {
-  const [formData, setFormData] = useState({
-    recipientEmails: "", // Changed to handle multiple emails
-    subject: "",
-    message: "",
-    resourceUrl: "",
+interface LinkData {
+  category: string;
+  referenceName: string;
+  session: string;
+  description: string;
+  url: string;
+  email: string;
+}
+
+interface Category {
+  name: string;
+  access: string[];
+}
+
+const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void }> = ({
+  onSectionChange,
+}) => {
+  const [linkData, setLinkData] = useState<LinkData>({
+    category: "",
+    referenceName: "",
+    session: "2024/2025",
+    description: "",
+    url: "",
+    email: "",
   });
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Handle form input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [sessions, setSessions] = useState<string[]>([]);
+  const [message, setMessage] = useState<string | null>(null);
+  const [messageType, setMessageType] = useState<"success" | "error" | null>(null);
+
+  // Fetch categories and sessions from the backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/categories-sessions");
+        const data = await response.json();
+
+        setSessions(data.sessions || []);
+
+        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        const userRole = userData.description;
+
+        const isAdmin = userRole === "admin";
+
+        if (isAdmin) {
+          setCategories(data.categories || []);
+        } else {
+          const filteredCategories = (data.categories || []).filter((category: Category) =>
+            category.access.includes(userRole)
+          );
+          setCategories(filteredCategories);
+        }
+      } catch (error) {
+        console.error("Error fetching categories and sessions:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setLinkData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  // Validate email addresses
-  const validateEmails = (emails: string[]) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emails.every((email) => emailRegex.test(email.trim()));
-  };
-
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
+    const requestBody = {
+      shared_by: "lecturer@example.com", // Replace with actual sender's email
+      shared_with: linkData.email,
+      category: linkData.category,
+      session: linkData.session,
+      subject: linkData.referenceName,
+      description: linkData.description,
+      resource_url: linkData.url,
+    };
+  
     try {
-      const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
-      const sharedBy = userData?.email;
-
-      if (!sharedBy) {
-        setErrorMessage("User email not found. Please log in again.");
-        return;
-      }
-
-      // Split recipientEmails into an array
-      const emailsArray = formData.recipientEmails.split(",").map((email) => email.trim());
-
-      // Validate the emails
-      if (!validateEmails(emailsArray)) {
-        setErrorMessage("One or more email addresses are invalid.");
-        return;
-      }
-
-      // Send the POST request to the backend
-      const response = await fetch("http://localhost:5000/api/sharedLinks/share", {
+      const response = await fetch("http://localhost:5000/api/shared-links", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          shared_by: sharedBy, // Sender's email
-          shared_with: emailsArray, // Array of recipient emails
-          subject: formData.subject,
-          message: formData.message,
-          resource_url: formData.resourceUrl,
-        }),
+        body: JSON.stringify(requestBody),
       });
-
+  
       if (response.ok) {
-        setSuccessMessage("Resource shared successfully!");
-        setFormData({ recipientEmails: "", subject: "", message: "", resourceUrl: "" });
+        const result = await response.json();
+        setMessage(result.message || "Resource uploaded successfully!");
+        setMessageType("success");
+  
+        onSectionChange("lecturerLinks");
       } else {
-        const errorData = await response.json();
-        setErrorMessage(errorData.message || "Failed to share the resource.");
+        const errorResult = await response.json();
+        setMessage(errorResult.message || "Failed to upload resource.");
+        setMessageType("error");
       }
     } catch (error) {
-      console.error("Error sharing resource:", error);
-      setErrorMessage("An error occurred. Please try again.");
+      console.error("Error occurred:", error);
+      setMessage("An error occurred. Please try again.");
+      setMessageType("error");
     }
+  
+    // Clear the message after 5 seconds
+    setTimeout(() => {
+      setMessage(null);
+      setMessageType(null);
+    }, 5000);
   };
-
+  
   return (
-    <div className="share-links-container">
-      <h1>Share a Resource</h1>
+    <div className="upload-links-container">
+      <h1>Send Links</h1>
 
-      {successMessage && <p className="success-message">{successMessage}</p>}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {message && (
+        <div className={`message-banner ${messageType}`}>
+          <p>{message}</p>
+        </div>
+      )}
 
-      <form onSubmit={handleSubmit} className="share-links-form">
+      <form onSubmit={handleSubmit} className="upload-links-form">
+        {/* Category */}
         <div className="form-group">
-          <label htmlFor="recipientEmails">Recipient Emails (comma-separated)</label>
+          <label htmlFor="category">Category</label>
+          <select name="category" value={linkData.category} onChange={handleChange} required>
+            <option value="">Select Category</option>
+            {categories.map((category: Category) => (
+              <option key={category.name} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Reference Name */}
+        <div className="form-group">
+          <label htmlFor="referenceName">Reference Name</label>
           <input
             type="text"
-            id="recipientEmails"
-            name="recipientEmails"
-            value={formData.recipientEmails}
+            name="referenceName"
+            value={linkData.referenceName}
             onChange={handleChange}
-            placeholder="Enter recipient emails separated by commas"
+            placeholder="Enter Reference Name"
             required
           />
         </div>
 
+        {/* Recipient Email */}
         <div className="form-group">
-          <label htmlFor="subject">Subject</label>
+          <label htmlFor="email">Recipient Email</label>
           <input
-            type="text"
-            id="subject"
-            name="subject"
-            value={formData.subject}
+            type="email"
+            name="email"
+            value={linkData.email}
             onChange={handleChange}
-            placeholder="Enter subject"
+            placeholder="Enter recipient's email"
             required
           />
         </div>
 
+        {/* Session */}
         <div className="form-group">
-          <label htmlFor="message">Message</label>
+          <label htmlFor="session">Session</label>
+          <select name="session" value={linkData.session} onChange={handleChange} required>
+            <option value="">Select Session</option>
+            {sessions.map((session: string) => (
+              <option key={session} value={session}>
+                {session}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Description */}
+        <div className="form-group">
+          <label htmlFor="description">Description</label>
           <textarea
-            id="message"
-            name="message"
-            value={formData.message}
+            name="description"
+            value={linkData.description}
             onChange={handleChange}
-            placeholder="Enter your message"
+            placeholder="Enter a short description"
             required
           />
         </div>
 
+        {/* URL Link */}
         <div className="form-group">
-          <label htmlFor="resourceUrl">Resource URL</label>
+          <label htmlFor="url">URL Link</label>
           <input
             type="url"
-            id="resourceUrl"
-            name="resourceUrl"
-            value={formData.resourceUrl}
+            name="url"
+            value={linkData.url}
             onChange={handleChange}
-            placeholder="Enter resource URL"
+            placeholder="Enter the URL"
             required
           />
         </div>
 
         <button type="submit" className="submit-btn">
-          Share Resource
+          Send Link
         </button>
       </form>
     </div>
   );
 };
 
-export default ShareLinks;
+export default LecturerUploadLinks;

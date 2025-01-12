@@ -5,41 +5,59 @@ import React from "react";
 
 // Dynamic imports for pages
 const Dashboard = dynamic(() => import("../dashboard/page"), { ssr: false });
+const MyLinks = dynamic(() => import("./myLinks"), { ssr: false });
 const TasksPage = dynamic(() => import("./tasks"), { ssr: false });
+const ShareLinks = dynamic(() => import("./ShareLinks"), { ssr: false });
+const Inbox = dynamic(() => import("./Inbox"), { ssr: false });
+const CategoryManagement = dynamic(() => import("./admin/categoryManagement"), { ssr: false });
+
 const TimetablePage = dynamic(() => import("./timetable"), { ssr: false });
-const SharedResources = dynamic(() => import("./sharedLinks"), { ssr: false });
 const StudentInfo = dynamic(() => import("./StudentInfo"), { ssr: false });
-const LecturerUploadLinks = dynamic(() => import("./LecturerUploadLinks"), { ssr: false });
-const LecturerLinks = dynamic(() => import("../components/LecturerLinks"), { ssr: false }); // Add LecturerLinks
-const ShareLinks = dynamic(() => import("../components/ShareLinks"), { ssr: false }); // Add LecturerLinks
-const Inbox = dynamic(() => import("./Inbox"), { ssr: false }); // Add LecturerLinks
+
+const UserManagement = dynamic(() => import("./admin/UserManagement"), {
+  ssr: false,
+});
+const CourseManagement = dynamic(() => import("./admin/CourseManagement"), {
+  ssr: false,
+});
+const AdminDashboard = dynamic(() => import("../dashboard-admin/page"), {
+  ssr: false,
+});
 
 interface MainContentProps {
   activeSection: string;
-  onSectionChange: (section: string) => void; // Add this prop
+  onSectionChange: (section: string) => void;
 }
 
-const MainContent: React.FC<MainContentProps> = ({ activeSection, onSectionChange }) => {
+const MainContent: React.FC<MainContentProps> = ({
+  activeSection,
+  onSectionChange,
+}) => {
   const renderContent = () => {
     switch (activeSection) {
       case "dashboard":
         return <Dashboard />;
+      
       case "tasks":
         return <TasksPage />;
       case "timetable":
         return <TimetablePage />;
-      case "sharedLinks":
-        return <SharedResources />;
       case "studentInfo":
         return <StudentInfo />;
-      case "LecturerUploadLinks":
-        return <LecturerUploadLinks onSectionChange={onSectionChange} />; // Pass the prop
-      case "lecturerLinks":
-        return <LecturerLinks />;
+      case "userManagement":
+        return <UserManagement />;
+      case "courseManagement":
+        return <CourseManagement />;
+      case "adminDashboard":
+        return <AdminDashboard />;
+        case "myLinks":
+        return <MyLinks />;
         case "ShareLinks":
           return <ShareLinks />;
+          case "categoryManagement":
+          return <CategoryManagement />;
           case "Inbox":
-        return <Inbox />;
+          return <Inbox />;
       default:
         return <Dashboard />;
     }

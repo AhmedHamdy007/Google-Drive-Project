@@ -13,18 +13,22 @@ const UserSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: false, // Email is now optional
-        trim: true,      // Automatically trims whitespace
+        required: false,
+        trim: true, // Automatically trims whitespace
     },
     description: {
         type: String,
     },
     courses_id: [
         {
-            type: String, // Reference to Course documents
-            ref: 'Course',
+            type: String,
+            ref: 'Course', // Reference to Course documents
         },
     ],
+    isAdmin: {
+        type: Boolean,
+        default: false, // Regular users are not admins by default
+    },
 }, { timestamps: true }); // Automatically adds createdAt and updatedAt fields
 
 module.exports = mongoose.model('User', UserSchema);

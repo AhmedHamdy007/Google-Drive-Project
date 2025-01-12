@@ -11,6 +11,7 @@ interface LinkData {
   course: string;
   description: string;
   url: string;
+  email: string; // New email field
 }
 
 const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void }> = ({
@@ -24,6 +25,7 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
     course: "",
     description: "",
     url: "",
+    email: "", // New email field default value
   });
 
   const [message, setMessage] = useState<string | null>(null); // Success/error message
@@ -107,6 +109,19 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
             value={linkData.referenceName}
             onChange={handleChange}
             placeholder="Enter Reference Name"
+            required
+          />
+        </div>
+
+        {/* Email */}
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={linkData.email}
+            onChange={handleChange}
+            placeholder="Enter Email"
             required
           />
         </div>
