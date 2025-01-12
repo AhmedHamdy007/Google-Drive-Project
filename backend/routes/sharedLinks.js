@@ -16,14 +16,17 @@ router.post("/", async (req, res) => {
     } = req.body;
 
     // Validate required fields
-    if (!shared_by || !shared_with || !category || !session || !subject || !description || !resource_url) {
+    if (!shared_by || !category || !session || !subject || !description || !resource_url) {
       return res.status(400).json({ message: "All fields are required." });
     }
+
+    // If shared_with is 'everyone', update accordingly
+    const recipients = shared_with === "everyone" ? ["everyone"] : shared_with.split(",");
 
     // Create a new shared link document
     const newSharedLink = new SharedLink({
       shared_by,
-      shared_with,
+      shared_with: recipients,
       category,
       session,
       subject,
@@ -34,13 +37,14 @@ router.post("/", async (req, res) => {
     // Save to the database
     await newSharedLink.save();
 
-    // Return success response
     res.status(201).json({ message: "Resource shared successfully!", data: newSharedLink });
   } catch (error) {
     console.error("Error sharing resource:", error);
     res.status(500).json({ message: "An error occurred while sharing the resource." });
   }
 });
+
+
 // GET /api/shared-links/shared-by-user - Get links shared by the current user
 router.get("/shared-by-user", async (req, res) => {
   try {
@@ -77,6 +81,9 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ message: "An error occurred while deleting the shared link." });
   }
 });
+
+
+// GET /api/shared-links/inbox - Fetch shared links for a user
 router.get("/inbox", async (req, res) => {
   try {
     const { email } = req.query;
@@ -85,14 +92,12 @@ router.get("/inbox", async (req, res) => {
       return res.status(400).json({ message: "Email is required." });
     }
 
-    // Find links that were shared with the user
-    const inboxLinks = await SharedLink.find({ shared_with: email });
+    // Fetch shared links sent specifically to the user or to 'everyone'
+    const sharedLinks = await SharedLink.find({
+      $or: [{ shared_with: email }, { shared_with: "everyone" }],
+    });
 
-    if (inboxLinks.length === 0) {
-      return res.status(404).json({ message: "No shared links found for this user." });
-    }
-
-    res.status(200).json(inboxLinks);
+    res.status(200).json(sharedLinks);
   } catch (error) {
     console.error("Error fetching inbox links:", error);
     res.status(500).json({ message: "An error occurred while fetching inbox links." });

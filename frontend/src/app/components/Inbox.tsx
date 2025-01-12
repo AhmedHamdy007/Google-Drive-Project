@@ -1,22 +1,23 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import "../styles/inbox.css";
 
 interface LinkData {
   _id: string;
   subject: string;
-  category: string;
-  session: string;
   description: string;
   resource_url: string;
   shared_by: string;
-  shared_with: string;
   createdAt: string;
 }
 
 const Inbox: React.FC = () => {
   const [links, setLinks] = useState<LinkData[]>([]);
+  const [filteredLinks, setFilteredLinks] = useState<LinkData[]>([]);
   const [expandedLinkId, setExpandedLinkId] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOption, setSortOption] = useState("date-desc");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,6 +44,7 @@ const Inbox: React.FC = () => {
         if (response.ok) {
           const data = await response.json();
           setLinks(data);
+          setFilteredLinks(data);
         } else {
           const errorData = await response.json();
           setError(errorData.message || "Failed to fetch inbox links.");
@@ -58,6 +60,32 @@ const Inbox: React.FC = () => {
     fetchInboxLinks();
   }, []);
 
+  // Search function
+  useEffect(() => {
+    const filtered = links.filter((link) =>
+      link.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      link.shared_by.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredLinks(filtered);
+  }, [searchTerm, links]);
+
+  // Sort function
+  useEffect(() => {
+    let sortedLinks = [...filteredLinks];
+
+    if (sortOption === "date-desc") {
+      sortedLinks.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    } else if (sortOption === "date-asc") {
+      sortedLinks.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    } else if (sortOption === "subject-asc") {
+      sortedLinks.sort((a, b) => a.subject.localeCompare(b.subject));
+    } else if (sortOption === "subject-desc") {
+      sortedLinks.sort((a, b) => b.subject.localeCompare(a.subject));
+    }
+
+    setFilteredLinks(sortedLinks);
+  }, [sortOption]);
+
   // Toggle expanded link details
   const toggleExpand = (id: string) => {
     setExpandedLinkId((prevId) => (prevId === id ? null : id));
@@ -69,11 +97,33 @@ const Inbox: React.FC = () => {
   return (
     <div className="inbox-container">
       <h1>Inbox</h1>
-      {links.length === 0 ? (
+
+      <div className="inbox-controls">
+        <input
+          type="text"
+          placeholder="Search by subject or shared by..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-bar"
+        />
+
+        <select
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+          className="sort-dropdown"
+        >
+          <option value="date-desc">Date (Newest First)</option>
+          <option value="date-asc">Date (Oldest First)</option>
+          <option value="subject-asc">Subject (A-Z)</option>
+          <option value="subject-desc">Subject (Z-A)</option>
+        </select>
+      </div>
+
+      {filteredLinks.length === 0 ? (
         <p>No shared links found.</p>
       ) : (
         <ul className="inbox-list">
-          {links.map((link) => (
+          {filteredLinks.map((link) => (
             <li key={link._id} className="inbox-item">
               {/* Main row showing subject and shared by */}
               <div className="link-header" onClick={() => toggleExpand(link._id)}>
@@ -88,15 +138,15 @@ const Inbox: React.FC = () => {
               {/* Dropdown details */}
               {expandedLinkId === link._id && (
                 <div className="link-details">
-                  <p><strong>Category:</strong> {link.category}</p>
-                  <p><strong>Session:</strong> {link.session}</p>
-                  <p><strong>Description:</strong> {link.description}</p>
-                  <p><strong>Resource URL:</strong> {link.resource_url}</p>
+                  <p>
+                    <strong>Resource URL:</strong> {link.resource_url}
+                  </p>
                   <a href={link.resource_url} target="_blank" rel="noopener noreferrer">
                     View Resource
                   </a>
-                  <p><strong>Shared with:</strong> {link.shared_with}</p>
-                  <p><strong>Shared on:</strong> {new Date(link.createdAt).toLocaleString()}</p>
+                  <p>
+                    <strong>Shared on:</strong> {new Date(link.createdAt).toLocaleString()}
+                  </p>
                 </div>
               )}
             </li>

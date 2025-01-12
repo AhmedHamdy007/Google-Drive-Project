@@ -4,7 +4,6 @@ const connectDB = require("./db"); // Import connectDB function
 require("dotenv").config();
 const taskRoutes = require("./routes/tasks");
 const timetableRoutes = require("./routes/timetable");
-const resourceRoutes = require("./routes/resources"); // Import your resources routes file
 const sharedLinksRoutes = require("./routes/sharedLinks"); // SharedLinks routes
 const userRoutes = require("./routes/userRoutes");
 const categorySessionRoutes = require('./routes/categorySession');
@@ -24,7 +23,6 @@ connectDB();
 app.use(require("./routes/auth"));
 app.use(require("./routes/userSubjects"));
 app.use(require("./routes/lecturerCourses"));
-app.use("/api/resources", resourceRoutes); // Mount the resources routes at /api/resources
 
 app.use("/users", require("./routes/users"));
 app.use("/api/tasks", taskRoutes);

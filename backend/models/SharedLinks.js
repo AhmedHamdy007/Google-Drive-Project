@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const SharedLinkSchema = new mongoose.Schema(
   {
@@ -7,7 +7,7 @@ const SharedLinkSchema = new mongoose.Schema(
       required: true,
     },
     shared_with: {
-      type: String, // Receiver's email
+      type: [String], // Array of recipient emails, or ['everyone'] for public links
       required: true,
     },
     category: {
@@ -34,6 +34,4 @@ const SharedLinkSchema = new mongoose.Schema(
   { timestamps: true } // Automatically adds createdAt and updatedAt
 );
 
-
-
-module.exports = mongoose.model('SharedLink', SharedLinkSchema);
+module.exports = mongoose.model("SharedLink", SharedLinkSchema);

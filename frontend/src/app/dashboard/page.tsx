@@ -33,7 +33,7 @@ const DashboardPage: React.FC = () => {
           return;
         }
 
-        // Correct API endpoint
+        // Fetch shared links from the backend
         const response = await fetch(
           `http://localhost:5000/api/shared-links/inbox?email=${email}`
         );
@@ -45,7 +45,12 @@ const DashboardPage: React.FC = () => {
         }
 
         const data = await response.json();
-        setSharedLinks(data.slice(0, 4)); // Limit to 4 latest links
+
+        // Sort the links by createdAt in descending order and limit to 4 links
+        const sortedLinks = data.sort(
+          (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        setSharedLinks(sortedLinks.slice(0, 4));
       } catch (err) {
         setError("An error occurred while fetching shared links.");
       }
@@ -106,31 +111,27 @@ const DashboardPage: React.FC = () => {
 
       <div className="dashboard-grid">
         {/* Shared Links Section */}
-        <div className="dashboard-section shared-links-section">
-          <h2 className="section-title">Latest Shared Links</h2>
-          {sharedLinks.length > 0 ? (
-            <ul className="shared-links-list">
-              {sharedLinks.map((link) => (
-                <li key={link._id} className="shared-link-item">
-                  <strong className="shared-link-subject">{link.subject}</strong>
-                  <p className="shared-link-message">{link.description}</p>
-                  <a
-                    href={link.resource_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="shared-link-url"
-                  >
-                    View Link
-                  </a>
-                  <p className="shared-link-meta">Shared by: {link.shared_by}</p>
-                  <p className="shared-link-meta">Date: {new Date(link.createdAt).toLocaleString()}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="no-data-message">No shared links available!</p>
-          )}
-        </div>
+<div className="dashboard-section shared-links-section">
+  <h2 className="section-title">Latest Shared Links</h2>
+  {sharedLinks.length > 0 ? (
+    <ul className="shared-links-list">
+      {sharedLinks.map((link) => (
+        <li
+          key={link._id}
+          className="shared-link-item compact"
+          onClick={() => window.open(link.resource_url, "_blank")}
+        >
+          <strong className="shared-link-subject">{link.subject}</strong>
+          <p className="shared-link-meta">
+            Shared by: {link.shared_by} | {new Date(link.createdAt).toLocaleString()}
+          </p>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p className="no-data-message">No shared links available!</p>
+  )}
+</div>
 
         {/* Tasks Section */}
         <div className="dashboard-section tasks-section">

@@ -63,49 +63,41 @@
 }
 
 /* Shared links styling */
+/* Shared Links List */
 .shared-links-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
+/* Compact Link Item */
 .shared-link-item {
-  background-color: var(--secondary-color);
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 15px;
   margin-bottom: 10px;
-  padding: 15px;
-  border-radius: var(--border-radius);
-  transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 .shared-link-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  background-color: #eaf3ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Subject Styling */
 .shared-link-subject {
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: bold;
-  color: var(--text-color);
+  color: #333;
 }
 
-.shared-link-message {
-  margin: 10px 0;
-  color: var(--text-color);
-}
-
-.shared-link-url {
-  color: var(--link-color);
-  text-decoration: none;
-}
-
-.shared-link-url:hover {
-  text-decoration: underline;
-}
-
+/* Meta Information */
 .shared-link-meta {
-  font-size: 14px;
-  color: var(--text-color);
+  font-size: 0.9rem;
+  color: #777;
+  margin-top: 5px;
 }
 
 /* Task cards styling */

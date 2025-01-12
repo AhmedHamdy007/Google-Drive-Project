@@ -1,6 +1,7 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
-import "../styles/lecturerUploadLinks.css";
+import "../styles/shareLinks.css";
 
 interface LinkData {
   category: string;
@@ -8,7 +9,8 @@ interface LinkData {
   session: string;
   description: string;
   url: string;
-  email: string;
+  emails: string;
+  sendToEveryone: boolean;
 }
 
 interface Category {
@@ -16,42 +18,49 @@ interface Category {
   access: string[];
 }
 
-const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void }> = ({
+const ShareLinks: React.FC<{ onSectionChange: (section: string) => void }> = ({
   onSectionChange,
 }) => {
   const [linkData, setLinkData] = useState<LinkData>({
     category: "",
     referenceName: "",
-    session: "2024/2025",
+    session: "",
     description: "",
     url: "",
-    email: "",
+    emails: "",
+    sendToEveryone: false,
   });
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [sessions, setSessions] = useState<string[]>([]);
   const [message, setMessage] = useState<string | null>(null);
-  const [messageType, setMessageType] = useState<"success" | "error" | null>(null);
+  const [messageType, setMessageType] = useState<"success" | "error" | null>(
+    null
+  );
+  const [userRole, setUserRole] = useState<string>("");
 
-  // Fetch categories and sessions from the backend
+  // Fetch categories and sessions from the backend and user role from sessionStorage
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/categories-sessions");
+        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+        setUserRole(userData.description); // Set user role
+
+        const response = await fetch(
+          "http://localhost:5000/api/categories-sessions"
+        );
         const data = await response.json();
 
         setSessions(data.sessions || []);
 
-        const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
-        const userRole = userData.description;
-
-        const isAdmin = userRole === "admin";
+        const isAdmin = userData.description === "admin";
 
         if (isAdmin) {
           setCategories(data.categories || []);
         } else {
-          const filteredCategories = (data.categories || []).filter((category: Category) =>
-            category.access.includes(userRole)
+          const filteredCategories = (data.categories || []).filter(
+            (category: Category) =>
+              category.access.includes(userData.description)
           );
           setCategories(filteredCategories);
         }
@@ -67,30 +76,37 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setLinkData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    const { name, value, type } = e.target;
+    if (type === "checkbox") {
+      setLinkData((prevData) => ({
+        ...prevData,
+        [name]: (e.target as HTMLInputElement).checked,
+      }));
+    } else {
+      setLinkData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
     const shared_by = userData.email;
-  
+
     const requestBody = {
       shared_by,
-      shared_with: linkData.email,
+      shared_with: linkData.sendToEveryone ? "everyone" : linkData.emails,
       category: linkData.category,
       session: linkData.session,
       subject: linkData.referenceName,
       description: linkData.description,
       resource_url: linkData.url,
     };
-  
+
     try {
       const response = await fetch("http://localhost:5000/api/shared-links", {
         method: "POST",
@@ -99,15 +115,20 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
         },
         body: JSON.stringify(requestBody),
       });
-  
-      // Handle 201 Created and 204 No Content responses
+
       if (response.status === 201) {
         const result = await response.json();
         setMessage(result.message || "Resource uploaded successfully!");
         setMessageType("success");
-      } else if (response.status === 204) {
-        setMessage("Resource uploaded successfully!");
-        setMessageType("success");
+        setLinkData({
+          category: "",
+          referenceName: "",
+          session: "",
+          description: "",
+          url: "",
+          emails: "",
+          sendToEveryone: false,
+        });
       } else {
         const errorResult = await response.json();
         setMessage(errorResult.message || "Failed to upload resource.");
@@ -118,14 +139,13 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
       setMessage("An error occurred. Please try again.");
       setMessageType("error");
     }
-  
-    // Clear the message after 5 seconds
+
     setTimeout(() => {
       setMessage(null);
       setMessageType(null);
     }, 5000);
   };
-  
+
   return (
     <div className="upload-links-container">
       <h1>Send Links</h1>
@@ -140,7 +160,12 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
         {/* Category */}
         <div className="form-group">
           <label htmlFor="category">Category</label>
-          <select name="category" value={linkData.category} onChange={handleChange} required>
+          <select
+            name="category"
+            value={linkData.category}
+            onChange={handleChange}
+            required
+          >
             <option value="">Select Category</option>
             {categories.map((category: Category) => (
               <option key={category.name} value={category.name}>
@@ -165,21 +190,27 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
 
         {/* Recipient Email */}
         <div className="form-group">
-          <label htmlFor="email">Recipient Email</label>
+          <label htmlFor="emails">Recipient Email(s)</label>
           <input
-            type="email"
-            name="email"
-            value={linkData.email}
+            type="text"
+            name="emails"
+            value={linkData.emails}
             onChange={handleChange}
-            placeholder="Enter recipient's email"
-            required
+            placeholder="Enter recipient email(s), separated by commas"
+            required={!linkData.sendToEveryone}
+            disabled={linkData.sendToEveryone}
           />
         </div>
 
         {/* Session */}
         <div className="form-group">
           <label htmlFor="session">Session</label>
-          <select name="session" value={linkData.session} onChange={handleChange} required>
+          <select
+            name="session"
+            value={linkData.session}
+            onChange={handleChange}
+            required
+          >
             <option value="">Select Session</option>
             {sessions.map((session: string) => (
               <option key={session} value={session}>
@@ -214,6 +245,21 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
           />
         </div>
 
+        {/* Send to Everyone (Only for Admin and Pensyarah) */}
+        {userRole === "admin" || userRole === "Pensyarah" ? (
+          <div className="form-group">
+            <label>
+              <input
+                type="checkbox"
+                name="sendToEveryone"
+                checked={linkData.sendToEveryone}
+                onChange={handleChange}
+              />
+              Send to Everyone
+            </label>
+          </div>
+        ) : null}
+
         <button type="submit" className="submit-btn">
           Send Link
         </button>
@@ -222,4 +268,4 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
   );
 };
 
-export default LecturerUploadLinks;
+export default ShareLinks;
