@@ -1,63 +1,116 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import "../styles/adminDashboard.css";
+
+interface User {
+  name: string;
+  email: string;
+}
+
+interface Category {
+  name: string;
+  access: string[];
+}
+
+interface Link {
+  subject: string;
+  message: string;
+  resource_url: string;
+  shared_by: string;
+  createdAt: string;
+}
 
 const AdminDashboard: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [sessions, setSessions] = useState<string[]>([]);
+  const [latestLinks, setLatestLinks] = useState<Link[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAdminStats = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/admin/stats");
+        const data = await response.json();
+
+        if (response.ok) {
+          setUsers(data.users);
+          setCategories(data.categories);
+          setSessions(data.sessions);
+          setLatestLinks(data.latestLinks);
+        } else {
+          setError(data.message || "Failed to fetch admin stats.");
+        }
+      } catch (err) {
+        console.error("Error fetching admin stats:", err);
+        setError("An error occurred while fetching admin stats.");
+      }
+    };
+
+    fetchAdminStats();
+  }, []);
+
+  if (error) return <p className="error">{error}</p>;
+
   return (
-    <div className="dashboard-admin">
+    <div className="admin-dashboard-container">
       <h1>Admin Dashboard</h1>
-      <p>Welcome to the Admin Dashboard. Here you can manage users, courses, and monitor important tasks.</p>
 
-      <div className="admin-sections">
-        <div className="section-card">
-          <h2>User Management</h2>
-          <p>Manage users, update their information, or remove access if necessary.</p>
-          <button onClick={() => window.location.href = "/userManagement"}>Go to User Management</button>
-        </div>
-
-        <div className="section-card">
-          <h2>Course Management</h2>
-          <p>Manage courses, add new ones, or remove outdated courses.</p>
-          <button onClick={() => window.location.href = "/courseManagement"}>Go to Course Management</button>
-        </div>
-
-        <div className="section-card">
-          <h2>Reports</h2>
-          <p>View reports and analytics to monitor the system’s performance.</p>
-          <button>View Reports</button>
-        </div>
+      {/* Users Section */}
+      <div className="stat-section">
+        <h2>Users in the System</h2>
+        <ul>
+          {users.map((user, index) => (
+            <li key={index}>
+              {user.name} - <a href={`mailto:${user.email}`}>{user.email}</a>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <style jsx>{`
-        .dashboard-admin {
-          padding: 20px;
-        }
-        .admin-sections {
-          display: flex;
-          gap: 20px;
-        }
-        .section-card {
-          background-color: #f4f4f4;
-          padding: 15px;
-          border-radius: 8px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          flex: 1;
-        }
-        .section-card h2 {
-          margin-bottom: 10px;
-        }
-        .section-card button {
-          background-color: #007bff;
-          color: white;
-          border: none;
-          padding: 10px;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-        .section-card button:hover {
-          background-color: #0056b3;
-        }
-      `}</style>
+      {/* Categories Section */}
+      <div className="stat-section">
+        <h2>Available Categories</h2>
+        <ul>
+          {categories.map((category, index) => (
+            <li key={index}>
+              {category.name} (Access: {category.access.join(", ")})
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Sessions Section */}
+      <div className="stat-section">
+        <h2>Available Sessions</h2>
+        <ul>
+          {sessions.map((session, index) => (
+            <li key={index}>{session}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Latest Links Section */}
+      <div className="stat-section">
+        <h2>Latest Received Links</h2>
+        <ul>
+          {latestLinks.map((link, index) => (
+            <li key={index}>
+              <strong>{link.subject}</strong> - Shared by: {link.shared_by}
+              <p>Message: {link.message}</p>
+              <a
+                href={link.resource_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View Resource
+              </a>
+              <p>Shared on: {new Date(link.createdAt).toLocaleString()}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

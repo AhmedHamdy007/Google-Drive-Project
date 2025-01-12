@@ -33,16 +33,19 @@ const DashboardPage: React.FC = () => {
           return;
         }
 
+        // Correct API endpoint
         const response = await fetch(
-          `http://localhost:5000/api/sharedLinks/inbox?email=${email}`
+          `http://localhost:5000/api/shared-links/inbox?email=${email}`
         );
-        const data = await response.json();
 
-        if (response.ok) {
-          setSharedLinks(data.slice(0, 4));
-        } else {
-          setError(data.message || "Failed to fetch shared links.");
+        if (!response.ok) {
+          const errorData = await response.json();
+          setError(errorData.message || "Failed to fetch shared links.");
+          return;
         }
+
+        const data = await response.json();
+        setSharedLinks(data.slice(0, 4)); // Limit to 4 latest links
       } catch (err) {
         setError("An error occurred while fetching shared links.");
       }
@@ -110,7 +113,7 @@ const DashboardPage: React.FC = () => {
               {sharedLinks.map((link) => (
                 <li key={link._id} className="shared-link-item">
                   <strong className="shared-link-subject">{link.subject}</strong>
-                  <p className="shared-link-message">{link.message}</p>
+                  <p className="shared-link-message">{link.description}</p>
                   <a
                     href={link.resource_url}
                     target="_blank"

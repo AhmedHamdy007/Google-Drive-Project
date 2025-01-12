@@ -8,6 +8,7 @@ const resourceRoutes = require("./routes/resources"); // Import your resources r
 const sharedLinksRoutes = require("./routes/sharedLinks"); // SharedLinks routes
 const userRoutes = require("./routes/userRoutes");
 const categorySessionRoutes = require('./routes/categorySession');
+const adminStatsRoutes = require("./routes/adminStats"); // Import admin stats route
 
 const app = express();
 const port = 5000;
@@ -25,17 +26,18 @@ app.use(require("./routes/userSubjects"));
 app.use(require("./routes/lecturerCourses"));
 app.use("/api/resources", resourceRoutes); // Mount the resources routes at /api/resources
 
-// Default route
-app.get("/", (req, res) => {
-  res.send("Backend is running...");
-});
 app.use("/users", require("./routes/users"));
 app.use("/api/tasks", taskRoutes);
 app.use("/api/timetable", timetableRoutes);
 app.use("/api/shared-links", sharedLinksRoutes);
 app.use("/api", userRoutes);
 app.use('/api/categories-sessions', categorySessionRoutes);
+app.use("/api/admin", adminStatsRoutes); // Admin route
 
+// Default route
+app.get("/", (req, res) => {
+  res.send("Backend is running...");
+});
 // Start server
 app.listen(port, () => {
   console.log(process.env.MONGO_URI);

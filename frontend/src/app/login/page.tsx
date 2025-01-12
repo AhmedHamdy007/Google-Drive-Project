@@ -34,7 +34,7 @@ export default function Login() {
       if (response.ok) {
         const result = await response.json();
         const userData = result.data;
-        const noMatrik = userData.matric_number;
+        const noMatrik = userData.login_name;
   
         // Save user data to sessionStorage
         sessionStorage.setItem("userData", JSON.stringify(userData));

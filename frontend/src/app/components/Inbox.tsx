@@ -5,17 +5,22 @@ import "../styles/inbox.css";
 interface LinkData {
   _id: string;
   subject: string;
-  message: string;
+  category: string;
+  session: string;
+  description: string;
   resource_url: string;
   shared_by: string;
+  shared_with: string;
   createdAt: string;
 }
 
 const Inbox: React.FC = () => {
-  const [links, setLinks] = useState<LinkData[]>([]); // Define the type for the links
+  const [links, setLinks] = useState<LinkData[]>([]);
+  const [expandedLinkId, setExpandedLinkId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch inbox links from the backend
   useEffect(() => {
     const fetchInboxLinks = async () => {
       try {
@@ -28,7 +33,7 @@ const Inbox: React.FC = () => {
           return;
         }
 
-        const response = await fetch(`http://localhost:5000/api/sharedLinks/inbox?email=${email}`, {
+        const response = await fetch(`http://localhost:5000/api/shared-links/inbox?email=${email}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -53,6 +58,11 @@ const Inbox: React.FC = () => {
     fetchInboxLinks();
   }, []);
 
+  // Toggle expanded link details
+  const toggleExpand = (id: string) => {
+    setExpandedLinkId((prevId) => (prevId === id ? null : id));
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
 
@@ -65,13 +75,30 @@ const Inbox: React.FC = () => {
         <ul className="inbox-list">
           {links.map((link) => (
             <li key={link._id} className="inbox-item">
-              <h3>{link.subject}</h3>
-              <p>{link.message}</p>
-              <a href={link.resource_url} target="_blank" rel="noopener noreferrer">
-                View Resource
-              </a>
-              <p>Shared by: {link.shared_by}</p>
-              <p>Date: {new Date(link.createdAt).toLocaleString()}</p>
+              {/* Main row showing subject and shared by */}
+              <div className="link-header" onClick={() => toggleExpand(link._id)}>
+                <p>
+                  <strong>{link.subject}</strong> - Shared by: {link.shared_by}
+                </p>
+                <button className="toggle-btn">
+                  {expandedLinkId === link._id ? "Hide Details" : "Show Details"}
+                </button>
+              </div>
+
+              {/* Dropdown details */}
+              {expandedLinkId === link._id && (
+                <div className="link-details">
+                  <p><strong>Category:</strong> {link.category}</p>
+                  <p><strong>Session:</strong> {link.session}</p>
+                  <p><strong>Description:</strong> {link.description}</p>
+                  <p><strong>Resource URL:</strong> {link.resource_url}</p>
+                  <a href={link.resource_url} target="_blank" rel="noopener noreferrer">
+                    View Resource
+                  </a>
+                  <p><strong>Shared with:</strong> {link.shared_with}</p>
+                  <p><strong>Shared on:</strong> {new Date(link.createdAt).toLocaleString()}</p>
+                </div>
+              )}
             </li>
           ))}
         </ul>

@@ -63,6 +63,7 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
     fetchData();
   }, []);
 
+  // Handle change for form inputs
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -73,11 +74,15 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
+    const userData = JSON.parse(sessionStorage.getItem("userData") || "{}");
+    const shared_by = userData.email;
+  
     const requestBody = {
-      shared_by: "lecturer@example.com", // Replace with actual sender's email
+      shared_by,
       shared_with: linkData.email,
       category: linkData.category,
       session: linkData.session,
@@ -95,12 +100,14 @@ const LecturerUploadLinks: React.FC<{ onSectionChange: (section: string) => void
         body: JSON.stringify(requestBody),
       });
   
-      if (response.ok) {
+      // Handle 201 Created and 204 No Content responses
+      if (response.status === 201) {
         const result = await response.json();
         setMessage(result.message || "Resource uploaded successfully!");
         setMessageType("success");
-  
-        onSectionChange("lecturerLinks");
+      } else if (response.status === 204) {
+        setMessage("Resource uploaded successfully!");
+        setMessageType("success");
       } else {
         const errorResult = await response.json();
         setMessage(errorResult.message || "Failed to upload resource.");
