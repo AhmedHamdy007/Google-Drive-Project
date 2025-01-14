@@ -9,6 +9,8 @@ interface LinkData {
   description: string;
   resource_url: string;
   shared_by: string;
+  category: string;
+  session: string;
   createdAt: string;
 }
 
@@ -43,8 +45,9 @@ const Inbox: React.FC = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setLinks(data);
-          setFilteredLinks(data);
+          const sortedData = data.sort((a: LinkData, b: LinkData) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+          setLinks(sortedData);
+          setFilteredLinks(sortedData);
         } else {
           const errorData = await response.json();
           setError(errorData.message || "Failed to fetch inbox links.");
@@ -92,11 +95,11 @@ const Inbox: React.FC = () => {
   };
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p className="error">{error}</p>;
+  if (error) return <p className="inbox-error">{error}</p>;
 
   return (
     <div className="inbox-container">
-      <h1>Inbox</h1>
+      <h1 className="inbox-title">Inbox</h1>
 
       <div className="inbox-controls">
         <input
@@ -104,13 +107,13 @@ const Inbox: React.FC = () => {
           placeholder="Search by subject or shared by..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-bar"
+          className="inbox-search-bar"
         />
 
         <select
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
-          className="sort-dropdown"
+          className="inbox-sort-dropdown"
         >
           <option value="date-desc">Date (Newest First)</option>
           <option value="date-asc">Date (Oldest First)</option>
@@ -120,33 +123,31 @@ const Inbox: React.FC = () => {
       </div>
 
       {filteredLinks.length === 0 ? (
-        <p>No shared links found.</p>
+        <p className="inbox-empty-message">No shared links found.</p>
       ) : (
         <ul className="inbox-list">
           {filteredLinks.map((link) => (
             <li key={link._id} className="inbox-item">
-              {/* Main row showing subject and shared by */}
-              <div className="link-header" onClick={() => toggleExpand(link._id)}>
+              <div className="inbox-link-header" onClick={() => toggleExpand(link._id)}>
                 <p>
                   <strong>{link.subject}</strong> - Shared by: {link.shared_by}
                 </p>
-                <button className="toggle-btn">
+                <button className="inbox-toggle-btn">
                   {expandedLinkId === link._id ? "Hide Details" : "Show Details"}
                 </button>
               </div>
 
-              {/* Dropdown details */}
               {expandedLinkId === link._id && (
-                <div className="link-details">
-                  <p>
-                    <strong>Resource URL:</strong> {link.resource_url}
-                  </p>
+                <div className="inbox-link-details">
+                  <p><strong>Category:</strong> {link.category}</p>
+                  <p><strong>Reference Name:</strong> {link.subject}</p>
+                  <p><strong>Session:</strong> {link.session}</p>
+                  <p><strong>Description:</strong> {link.description}</p>
+                  <p><strong>Resource URL:</strong> {link.resource_url}</p>
                   <a href={link.resource_url} target="_blank" rel="noopener noreferrer">
                     View Resource
                   </a>
-                  <p>
-                    <strong>Shared on:</strong> {new Date(link.createdAt).toLocaleString()}
-                  </p>
+                  <p><strong>Shared on:</strong> {new Date(link.createdAt).toLocaleString()}</p>
                 </div>
               )}
             </li>

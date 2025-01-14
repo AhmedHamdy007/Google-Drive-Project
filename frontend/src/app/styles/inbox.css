@@ -54,7 +54,7 @@
   color: var(--text-color);
 }
 
-.toggle-btn {
+.inbox-toggle-btn {
   background-color: var(--primary-color);
   color: white;
   border: none;
@@ -63,7 +63,7 @@
   cursor: pointer;
 }
 
-.toggle-btn:hover {
+.inbox-toggle-btn {
   background-color: var(--link-color);
 }
 
@@ -135,4 +135,28 @@
   .link-details a {
     font-size: 0.9rem;
   }
+}
+
+
+/* Inbox controls (search and sort) */
+.inbox-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* Search bar */
+.inbox-search-bar {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+}
+
+/* Sort dropdown */
+.inbox-sort-dropdown {
+  width: 25%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
 }

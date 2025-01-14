@@ -40,9 +40,8 @@ body {
 }
 
 /* Sidebar */
-/* Sidebar */
 .sidebar {
-  width: 20%; /* Sidebar takes 20% of the total width */
+  width: 15%; /* Sidebar takes 20% of the total width */
   height: 100vh; /* Full height of the viewport */
   background-color: var(--primary-color); /* Sidebar background */
   color: white;
@@ -102,7 +101,7 @@ body {
 
 /* Main Content */
 .main-contentg {
-  margin-left: 20%; /* Match the sidebar width */
+  margin-left: 15%; /* Match the sidebar width */
   flex-grow: 1; /* Take the remaining space */
   padding: 20px;
   overflow-y: auto; /* Enable scrolling for content overflow */

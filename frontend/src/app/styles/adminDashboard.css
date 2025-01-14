@@ -1,28 +1,47 @@
-.admin-dashboard-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-  background-color: #f9f9f9;
+/* Admin Dashboard Styles */
+
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #f5f8fa;
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --border-color: #ddd;
+  --border-radius: 8px;
+  --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --font-family: 'Poppins', sans-serif;
 }
 
-h1 {
-  font-size: 28px;
-  color: #333;
+/* Container Styling */
+.admin-dashboard-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  font-family: var(--font-family);
+}
+
+.admin-dashboard-container h1 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  text-align: center;
   margin-bottom: 20px;
 }
 
+/* Stat Section Styling */
 .stat-section {
-  background-color: #ffffff;
+  margin-bottom: 30px;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
 }
 
 .stat-section h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-  color: #0070f3;
+  font-size: 1.5rem;
+  color: var(--text-color);
+  margin-bottom: 15px;
 }
 
 .stat-section ul {
@@ -32,12 +51,51 @@ h1 {
 
 .stat-section li {
   margin-bottom: 10px;
-  font-size: 16px;
-  color: #666;
+  padding: 10px;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease-in-out;
 }
 
+.stat-section li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Link Styling */
+.stat-section a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.stat-section a:hover {
+  text-decoration: underline;
+}
+
+/* Error Message Styling */
 .error {
-  color: red;
-  font-size: 18px;
-  margin-top: 20px;
+  color: #ff4d4f;
+  background-color: #fff2f0;
+  padding: 10px;
+  border: 1px solid #ff4d4f;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .admin-dashboard-container {
+    padding: 15px;
+  }
+
+  .stat-section {
+    padding: 15px;
+  }
+
+  .stat-section h2 {
+    font-size: 1.3rem;
+  }
 }

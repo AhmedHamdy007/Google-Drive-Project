@@ -74,7 +74,9 @@ const ShareLinks: React.FC<{ onSectionChange: (section: string) => void }> = ({
 
   // Handle change for form inputs
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value, type } = e.target;
     if (type === "checkbox") {
@@ -157,24 +159,24 @@ const ShareLinks: React.FC<{ onSectionChange: (section: string) => void }> = ({
       )}
 
       <form onSubmit={handleSubmit} className="upload-links-form">
-        {/* Category */}
-        <div className="form-group">
-          <label htmlFor="category">Category</label>
-          <select
-            name="category"
-            value={linkData.category}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Category</option>
-            {categories.map((category: Category) => (
-              <option key={category.name} value={category.name}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
+      {/* Category Dropdown */}
+<div className="shareLinks-form-group">
+  <label htmlFor="category" className="shareLinks-label">Category</label>
+  <select
+    name="category"
+    value={linkData.category}
+    onChange={handleChange}
+    required
+    className="shareLinks-dropdown"
+  >
+    <option value="">Select Category</option>
+    {categories.map((category: Category) => (
+      <option key={category.name} value={category.name}>
+        {category.name}
+      </option>
+    ))}
+  </select>
+</div>
         {/* Reference Name */}
         <div className="form-group">
           <label htmlFor="referenceName">Reference Name</label>
@@ -203,22 +205,24 @@ const ShareLinks: React.FC<{ onSectionChange: (section: string) => void }> = ({
         </div>
 
         {/* Session */}
-        <div className="form-group">
-          <label htmlFor="session">Session</label>
-          <select
-            name="session"
-            value={linkData.session}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Session</option>
-            {sessions.map((session: string) => (
-              <option key={session} value={session}>
-                {session}
-              </option>
-            ))}
-          </select>
-        </div>
+       {/* Session Dropdown */}
+<div className="shareLinks-form-group">
+  <label htmlFor="session" className="shareLinks-label">Session</label>
+  <select
+    name="session"
+    value={linkData.session}
+    onChange={handleChange}
+    required
+    className="shareLinks-dropdown"
+  >
+    <option value="">Select Session</option>
+    {sessions.map((session: string) => (
+      <option key={session} value={session}>
+        {session}
+      </option>
+    ))}
+  </select>
+</div>
 
         {/* Description */}
         <div className="form-group">
