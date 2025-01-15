@@ -62,7 +62,7 @@ const Sidebar: React.FC<{ onSectionChange: (section: string) => void }> = ({
           </>
         )}
         <li>
-              <button onClick={() => onSectionChange("Inbox")}>Inbox</button>
+              <button onClick={() => onSectionChange("Inbox")}>Links shared to me</button>
             </li>
             <li>
               <button onClick={() => onSectionChange("ShareLinks")}>

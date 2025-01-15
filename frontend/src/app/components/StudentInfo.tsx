@@ -76,7 +76,7 @@ export default function StudentInfo() {
 
   return (
     <div className="student-info-container">
-      <h1 className="page-title">Student Info Dashboard</h1>
+      <h1 className="page-title">User Info Dashboard</h1>
 
       {/* User Information */}
       {userData ? (

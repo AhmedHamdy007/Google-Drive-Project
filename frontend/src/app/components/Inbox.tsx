@@ -99,7 +99,7 @@ const Inbox: React.FC = () => {
 
   return (
     <div className="inbox-container">
-      <h1 className="inbox-title">Inbox</h1>
+      <h1 className="inbox-title">Links shared to me</h1>
 
       <div className="inbox-controls">
         <input

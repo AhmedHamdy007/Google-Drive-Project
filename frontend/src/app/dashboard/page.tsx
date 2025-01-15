@@ -112,7 +112,7 @@ const DashboardPage: React.FC = () => {
       <div className="dashboard-grid">
         {/* Shared Links Section */}
 <div className="dashboard-section shared-links-section">
-  <h2 className="section-title">Latest Shared Links</h2>
+  <h2 className="section-title">Latest Links shared with you</h2>
   {sharedLinks.length > 0 ? (
     <ul className="shared-links-list">
       {sharedLinks.map((link) => (
