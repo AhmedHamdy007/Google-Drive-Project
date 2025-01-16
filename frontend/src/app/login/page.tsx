@@ -34,7 +34,7 @@ export default function Login() {
       if (response.ok) {
         const result = await response.json();
         const userData = result.data;
-        const noMatrik = userData.login_name;
+        const noMatrik = userData.matric_number;
   
         // Save user data to sessionStorage
         sessionStorage.setItem("userData", JSON.stringify(userData));
@@ -43,6 +43,7 @@ export default function Login() {
         // Set active section based on user role
         if (userData.isAdmin) {
           sessionStorage.setItem("activeSection", "adminDashboard");
+          console.log(userData);
         } else {
           sessionStorage.setItem("activeSection", "dashboard");
         }

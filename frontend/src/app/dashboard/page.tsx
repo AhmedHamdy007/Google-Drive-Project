@@ -59,7 +59,7 @@ const DashboardPage: React.FC = () => {
     const fetchDailyTasks = async () => {
       try {
         const userData = JSON.parse(sessionStorage.getItem("userData") ?? "{}");
-        const matricNo = userData?.login_name;
+        const matricNo = userData?.matric_number;
         const tasks = await fetchTasks(matricNo);
         setTasks(tasks);
       } catch (err) {
@@ -70,7 +70,7 @@ const DashboardPage: React.FC = () => {
     const fetchTimetableData = async () => {
       try {
         const userData = JSON.parse(sessionStorage.getItem("userData") ?? "{}");
-        const matricNo = userData?.login_name;
+        const matricNo = userData?.matric_number;
         setLoading(true);
 
         const response = await fetch(

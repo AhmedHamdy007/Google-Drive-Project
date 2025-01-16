@@ -40,7 +40,7 @@ export default function TimetablePage() {
   useEffect(() => {
     const fetchUserTimetable = async () => {
       const userData = JSON.parse(sessionStorage.getItem("userData")!);
-      const matricNo = userData?.login_name;
+      const matricNo = userData?.matric_number;
 
       try {
         const data = await fetchTimetable(matricNo);
@@ -55,7 +55,7 @@ export default function TimetablePage() {
 
   const handleCreateEntry = async () => {
     const userData = JSON.parse(sessionStorage.getItem("userData")!);
-    const matricNo = userData?.login_name;
+    const matricNo = userData?.matric_number;
 
     try {
       const entry = await createTimetableEntry({ ...newEntry, matricNo });

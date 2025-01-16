@@ -30,7 +30,7 @@ export default function TasksPage() {
   useEffect(() => {
     // Retrieve matric number from session storage
     const userData = JSON.parse(sessionStorage.getItem('userData')!);
-    const matricNo = userData?.login_name;
+    const matricNo = userData?.matric_number;
 
     const getTasks = async () => {
       try {

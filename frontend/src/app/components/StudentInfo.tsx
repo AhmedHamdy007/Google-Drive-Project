@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 // Define types for user and subject data
 interface UserData {
   session_id: string;
-  login_name: string; // Matric number
-  full_name: string;
+  matric_number: string; // Matric number
+  name: string;
   email: string;
   description: string;
 }
@@ -83,19 +83,19 @@ export default function StudentInfo() {
         <section className="user-info">
           <h2 className="section-title">User Information</h2>
           <p>
-            <strong>Full Name:</strong> {userData.full_name}
+            <strong>Full Name:</strong> {userData.name}
           </p>
           <p>
             <strong>Email:</strong> {userData.email}
           </p>
-          <p>
+          {/* <p>
             <strong>Session ID:</strong> {userData.session_id}
-          </p>
+          </p> */}
           <p>
             <strong>Description:</strong> {userData.description}
           </p>
           <p>
-            <strong>Matric No:</strong> {userData.login_name} {/* Matric number */}
+            <strong>Matric No:</strong> {userData.matric_number} {/* Matric number */}
           </p>
         </section>
       ) : (
