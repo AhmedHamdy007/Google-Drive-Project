@@ -5,7 +5,7 @@ import "../../styles/userManagement.css"; // Import the new CSS file
 
 interface User {
   _id: string;
-  name: string;
+  full_name: string;
   matric_number: string;
   email: string;
   description: string;
@@ -53,7 +53,7 @@ export default function UserManagement() {
           <tbody>
             {users.map((user) => (
               <tr key={user._id}>
-                <td>{user.name}</td>
+                <td>{user.full_name}</td>
                 <td>{user.matric_number}</td>
                 <td>{user.email || "N/A"}</td>
                 <td>{user.description}</td>
