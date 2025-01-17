@@ -8,7 +8,7 @@ const SharedLink = require("../models/SharedLinks");
 router.get("/stats", async (req, res) => {
   try {
     // Fetch all users
-    const users = await User.find({}, "name email");
+    const users = await User.find({}, "full_name email");
 
     // Fetch categories and sessions
     const categorySession = await CategorySession.findOne();

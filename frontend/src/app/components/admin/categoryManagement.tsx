@@ -169,6 +169,7 @@ const AdminCategorySessionManagement: React.FC = () => {
                   />
                   <div className="access-control">
                     <label>
+                   <p>Accessible by:</p>
                       <input
                         type="checkbox"
                         checked={accessControl.includes("Pelajar FSKSM")}
@@ -177,6 +178,7 @@ const AdminCategorySessionManagement: React.FC = () => {
                       Pelajar FSKSM
                     </label>
                     <label>
+                      
                       <input
                         type="checkbox"
                         checked={accessControl.includes("Pensyarah")}
@@ -213,6 +215,7 @@ const AdminCategorySessionManagement: React.FC = () => {
           onChange={(e) => setNewCategoryValue(e.target.value)}
         />
         <div className="access-control">
+            <p>Accessible by:</p>
           <label>
             <input
               type="checkbox"

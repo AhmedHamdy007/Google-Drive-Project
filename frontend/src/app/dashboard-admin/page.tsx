@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/adminDashboard.css";
 
 interface User {
-  name: string;
+  full_name: string;
   email: string;
 }
 
@@ -63,7 +63,7 @@ const AdminDashboard: React.FC = () => {
         <ul>
           {users.map((user, index) => (
             <li key={index}>
-              {user.name} - <a href={`mailto:${user.email}`}>{user.email}</a>
+              {user.full_name} - <a href={`mailto:${user.email}`}>{user.email}</a>
             </li>
           ))}
         </ul>

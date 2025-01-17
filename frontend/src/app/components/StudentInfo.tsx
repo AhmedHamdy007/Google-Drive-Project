@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 interface UserData {
   session_id: string;
   matric_number: string; // Matric number
-  name: string;
+  full_name: string;
   email: string;
   description: string;
 }
@@ -83,7 +83,7 @@ export default function StudentInfo() {
         <section className="user-info">
           <h2 className="section-title">User Information</h2>
           <p>
-            <strong>Full Name:</strong> {userData.name}
+            <strong>Full Name:</strong> {userData.full_name            }
           </p>
           <p>
             <strong>Email:</strong> {userData.email}

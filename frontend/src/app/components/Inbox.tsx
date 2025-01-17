@@ -67,7 +67,8 @@ const Inbox: React.FC = () => {
   useEffect(() => {
     const filtered = links.filter((link) =>
       link.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      link.shared_by.toLowerCase().includes(searchTerm.toLowerCase())
+      link.shared_by.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (link.session && link.session.toString().toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setFilteredLinks(filtered);
   }, [searchTerm, links]);
@@ -104,7 +105,7 @@ const Inbox: React.FC = () => {
       <div className="inbox-controls">
         <input
           type="text"
-          placeholder="Search by subject or shared by..."
+          placeholder="Search by subject, shared by, or session..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="inbox-search-bar"
