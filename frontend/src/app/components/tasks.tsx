@@ -31,6 +31,7 @@ export default function TasksPage() {
     // Retrieve matric number from session storage
     const userData = JSON.parse(sessionStorage.getItem('userData')!);
     const matricNo = userData?.matric_number;
+// const matricNo = userData?.matric_number;
 
     const getTasks = async () => {
       try {
@@ -47,7 +48,8 @@ export default function TasksPage() {
   const handleCreateTask = async () => {
     try {
       const userData = JSON.parse(sessionStorage.getItem('userData')!);
-      const matricNo = userData?.login_name;
+      const matricNo = userData?.matric_number;
+
 
       const task = await createTask({ ...newTask, matricNo });
       setTasks([...tasks, task]);
