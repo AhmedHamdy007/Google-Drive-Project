@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "../styles/sidebar.css";
 
+// Updated Sidebar component with improved navigation
 const Sidebar: React.FC<{ onSectionChange: (section: string) => void }> = ({
   onSectionChange,
 }) => {
